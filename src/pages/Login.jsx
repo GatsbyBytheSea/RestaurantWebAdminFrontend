@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { Button, Form, Input, message } from 'antd'
 import { useNavigate } from 'react-router-dom'
+
+// 引入你刚才写的 api函数
 import { adminLogin } from '../api/auth'
 
 export default function Login() {
@@ -10,13 +12,13 @@ export default function Login() {
     const onFinish = async (values) => {
         setLoading(true)
         try {
-            const res = await adminLogin(values.username, values.password)
+            // 调用我们新写的表单方式提交
+            await adminLogin(values.username, values.password)
             message.success('登录成功')
-            // todo: 在这里需要持久化登录状态，可以使用localStorage保存token等，需要与后端进行配合
-            //  e.g. localStorage.setItem('token', res.data.token)
+            // 跳转到后台首页
             navigate('/')
         } catch (err) {
-            message.error(err.response?.data?.error || '登录失败')
+            message.error('登录失败或用户名密码错误')
         }
         setLoading(false)
     }
