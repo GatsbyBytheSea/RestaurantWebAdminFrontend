@@ -2,8 +2,7 @@ import React, { useState } from 'react'
 import { Button, Form, Input, message } from 'antd'
 import { useNavigate } from 'react-router-dom'
 
-// 引入你刚才写的 api函数
-import { adminLogin } from '../api/auth'
+import { adminLogin } from '../api/auth.js'
 
 export default function Login() {
     const [loading, setLoading] = useState(false)
@@ -12,7 +11,7 @@ export default function Login() {
     const onFinish = async (values) => {
         setLoading(true)
         try {
-            // 调用我们新写的表单方式提交
+            // 调用表单方式提交
             await adminLogin(values.username, values.password)
             message.success('登录成功')
             // 跳转到后台首页
