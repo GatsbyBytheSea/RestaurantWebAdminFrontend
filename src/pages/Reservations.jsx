@@ -42,8 +42,19 @@ export default function Reservations() {
         setLoading(false)
     }
 
+    const fetchTodayReservations = async () => {
+        setLoading(true)
+        try {
+            const res = await getTodayReservations()
+            setData(res.data)
+        } catch (err) {
+            message.error('获取今日订单失败')
+        }
+        setLoading(false)
+    }
+
     useEffect(() => {
-        fetchAll()
+        fetchTodayReservations()
     }, [])
 
     // 状态渲染
@@ -73,6 +84,8 @@ export default function Reservations() {
         {
             title: '修改时间',
             dataIndex: 'updateTime',
+            defaultSortOrder: 'descend',
+            sorter: (a, b) => dayjs(a.updateTime) - dayjs(b.updateTime),
             render: (time) => time ? dayjs(time).format('YYYY-MM-DD HH:mm') : ''
         },
         {
@@ -85,8 +98,8 @@ export default function Reservations() {
             render: (record) => (
                 <Space>
                     <Button danger onClick={() => handleCancel(record.id)}>取消</Button>
-                    <Button onClick={() => handleConfirm(record.id)}>确认</Button>
-                    <Button onClick={() => openEditModal(record.id)}>编辑</Button>
+                    <Button color="green" variant="outlined" onClick={() => handleConfirm(record.id)}>确认</Button>
+                    <Button color="blue" variant="outlined" onClick={() => openEditModal(record.id)}>编辑</Button>
                 </Space>
             )
         }
@@ -118,18 +131,6 @@ export default function Reservations() {
         setAddModal(true)
     }
 
-    // “查询今日订单”
-    const handleTodayOrders = async () => {
-        setLoading(true)
-        try {
-            const res = await getTodayReservations()
-            setData(res.data)
-        } catch (err) {
-            message.error('获取今日订单失败')
-        }
-        setLoading(false)
-    }
-
     // 状态下拉菜单选择后，进行按状态查询
     const handleStatusChange = async (value) => {
         setStatusFilter(value)
@@ -143,7 +144,7 @@ export default function Reservations() {
             }
             setLoading(false)
         } else {
-            fetchAll()
+            fetchTodayReservations()
         }
     }
 
@@ -153,7 +154,7 @@ export default function Reservations() {
         try {
             await confirmReservation(id)
             message.success('已确认该预订')
-            fetchAll()
+            fetchTodayReservations()
         } catch (err) {
             message.error('确认失败')
         }
@@ -164,12 +165,12 @@ export default function Reservations() {
             // 格式化日期
             const payload = {
                 ...values,
-                reservationTime: values.reservationTime.format('YYYY-MM-DD HH:mm:ss')
+                reservationTime: values.reservationTime.format('YYYY-MM-DDTHH:mm:ss')
             }
             await createReservation(payload)
             message.success('创建预订成功')
             setAddModal(false)
-            fetchAll()
+            fetchTodayReservations()
         } catch (err) {
             console.error(err)
             message.error('创建预订失败')
@@ -180,12 +181,12 @@ export default function Reservations() {
         try {
             const payload = {
                 ...values,
-                reservationTime: values.reservationTime.format('YYYY-MM-DD HH:mm:ss')
+                reservationTime: values.reservationTime.format('YYYY-MM-DDTHH:mm:ss')
             }
             await updateReservation(editModal.record.id, payload)
             message.success('更新成功')
             setEditModal({ visible: false, record: null })
-            fetchAll()
+            fetchTodayReservations()
         } catch (err) {
             console.error(err)
             message.error('更新失败')
@@ -197,7 +198,7 @@ export default function Reservations() {
         try {
             await cancelReservation(id)
             message.success('取消成功')
-            fetchAll()
+            fetchTodayReservations()
         } catch (err) {
             message.error('取消失败')
         }
@@ -231,9 +232,9 @@ export default function Reservations() {
         <div>
             <h2>预订管理</h2>
 
-            <div style={{ marginBottom: 16 }}>
+            <div style={{ display: 'flex',  marginBottom: 16 }}>
                 <Button type="primary" onClick={openAddModal} style={{ marginRight: 16 }}>创建预订</Button>
-                <Button type="primary" onClick={handleTodayOrders} style={{ marginRight: 16 }}>查询今日订单</Button>
+                <Button color="blue" variant="outlined" onClick={fetchTodayReservations} style={{ marginRight: 16 }}>今日预定</Button>
 
                 <Input
                     placeholder="查询条件"
@@ -254,7 +255,8 @@ export default function Reservations() {
                     <Select.Option value="CONFIRMED">确认</Select.Option>
                     <Select.Option value="CANCELLED">被取消</Select.Option>
                 </Select>
-                <Button type="link" onClick={fetchAll} style={{ marginLeft: 8 }}>重置</Button>
+
+                <Button type="primary" onClick={fetchAll} style={{marginLeft: 'auto' }}>查看全部预定</Button>
             </div>
 
             <Table
@@ -262,6 +264,7 @@ export default function Reservations() {
                 dataSource={data}
                 rowKey="id"
                 loading={loading}
+                pagination={{ pageSize: 8 }}
             />
 
             <Modal

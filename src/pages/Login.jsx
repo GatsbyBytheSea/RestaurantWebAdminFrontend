@@ -2,8 +2,7 @@ import React, { useState } from 'react'
 import { Button, Form, Input, message } from 'antd'
 import { useNavigate } from 'react-router-dom'
 
-// 引入你刚才写的 api函数
-import { adminLogin } from '../api/auth'
+import { adminLogin } from '../api/auth.js'
 
 export default function Login() {
     const [loading, setLoading] = useState(false)

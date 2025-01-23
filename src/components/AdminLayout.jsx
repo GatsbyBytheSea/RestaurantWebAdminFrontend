@@ -1,5 +1,5 @@
 import React from 'react'
-import { Layout, Menu } from 'antd'
+import {Button, Layout, Menu} from 'antd'
 import { Outlet, useNavigate, Link } from 'react-router-dom'
 
 const { Header, Sider, Content } = Layout
@@ -29,11 +29,11 @@ export default function AdminLayout() {
                 </Menu>
             </Sider>
             <Layout>
-                <Header style={{ background: '#fff', textAlign: 'right', paddingRight: '20px' }}>
-                    {/* 如果需要退出:
-          <Button onClick={() => { localStorage.removeItem('token'); navigate('/login') }}>退出</Button>
-          */}
-                </Header>
+
+                {/*<Header style={{ background: '#fff', textAlign: 'right', paddingRight: '20px' }}>*/}
+                {/*<Button type="primary" onClick={() => { localStorage.removeItem('token'); navigate('/login') }}>退出</Button>*/}
+                {/*</Header>*/}
+
                 <Content style={{ margin: '16px' }}>
                     <Outlet />
                 </Content>
