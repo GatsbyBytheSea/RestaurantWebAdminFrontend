@@ -1,5 +1,7 @@
 import React from 'react'
-import { Card, Row, Col } from 'antd'
+import {Card, Row, Col, Button, FloatButton} from 'antd'
+import {Content, Header} from "antd/es/layout/layout.js";
+import {Outlet} from "react-router-dom";
 
 export default function Dashboard() {
     return (

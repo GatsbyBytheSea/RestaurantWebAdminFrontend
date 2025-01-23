@@ -1,26 +1,26 @@
 import axios from 'axios'
 
-// GET /api/v1/admin/tables
+// 获取所有桌子
 export function getAllTables() {
     return axios.get('/api/v1/admin/tables')
 }
 
-// PUT /api/v1/admin/tables/{id}/status
+// 更新桌子状态
 export function updateTableStatus(id, status) {
     return axios.put(`/api/v1/admin/tables/${id}/status`, { status })
 }
 
-// POST /api/v1/admin/tables
+// 增加桌子
 export function addTable(data) {
     return axios.post('/api/v1/admin/tables', data)
 }
 
-// DELETE /api/v1/admin/tables/{id}
+// 删除桌子
 export function deleteTable(id) {
     return axios.delete(`/api/v1/admin/tables/${id}`)
 }
 
-// PUT /api/v1/admin/tables/{id}
+// 更新桌子信息
 export function updateTable(id, data) {
     return axios.put(`/api/v1/admin/tables/${id}`, data)
 }

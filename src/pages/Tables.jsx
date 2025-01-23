@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Table, Button, message, Modal, Form, Input, Tag } from 'antd'
+import {Table, Button, message, Modal, Form, Input, Tag, Divider, Select} from 'antd'
 import { getAllTables, updateTableStatus, addTable, deleteTable, updateTable } from '../api/tables.js'
 import TableVisualization from '../components/TableVisualization'
 
@@ -8,6 +8,8 @@ export default function Tables() {
     const [loading, setLoading] = useState(false)
     const [editModal, setEditModal] = useState({visible:false, record:null})
     const [addModal, setAddModal] = useState(false)
+
+    const [editForm] = Form.useForm()
 
     const fetchTables = async () => {
         setLoading(true)
@@ -24,10 +26,23 @@ export default function Tables() {
         fetchTables()
     }, [])
 
+    useEffect(() => {
+        if (editModal.visible && editModal.record) {
+            editForm.setFieldsValue({
+                tableName: editModal.record.tableName,
+                capacity: editModal.record.capacity,
+                location: editModal.record.location,
+                status: editModal.record.status
+            })
+        } else {
+            editForm.resetFields()
+        }
+    }, [editModal, editForm])
+
     const columns = [
-        { title: 'ID', dataIndex: 'id' },
         { title: '桌名', dataIndex: 'tableName' },
         { title: '容量', dataIndex: 'capacity' },
+        { title: '位置', dataIndex: 'location' },
         {
             title: '状态',
             dataIndex: 'status',
@@ -42,7 +57,7 @@ export default function Tables() {
             title: '操作',
             render: (record) => (
                 <>
-                    <Button onClick={() => setEditModal({visible:true, record})} style={{marginRight:8}}>编辑</Button>
+                    <Button color="blue" variant="outlined" onClick={() => setEditModal({visible:true, record})} style={{marginRight:8}}>编辑</Button>
                     <Button danger onClick={() => handleDelete(record.id)}>删除</Button>
                 </>
             )
@@ -85,6 +100,8 @@ export default function Tables() {
     return (
         <div>
             <h2>餐桌管理</h2>
+            <TableVisualization tables={data} />
+            <Divider style={{ margin: '32px 0' }} />
             <Button type="primary" onClick={() => setAddModal(true)} style={{marginBottom:16}}>
                 添加餐桌
             </Button>
@@ -94,11 +111,10 @@ export default function Tables() {
                 dataSource={data}
                 rowKey="id"
                 loading={loading}
+                pagination={{ pageSize: 6 }}
+
             />
 
-            <TableVisualization tables={data} />
-
-            {/* 编辑弹窗 */}
             <Modal
                 title="编辑餐桌"
                 open={editModal.visible}
@@ -107,17 +123,29 @@ export default function Tables() {
             >
                 <Form
                     layout="vertical"
-                    initialValues={editModal.record}
+                    form={editForm}
                     onFinish={handleEditSave}
                 >
-                    <Form.Item label="桌名" name="tableName" rules={[{required:true}]}>
+                    <Form.Item label="桌名" name="tableName" rules={[{required:true, message: '请添加桌名' }]}>
                         <Input />
                     </Form.Item>
-                    <Form.Item label="容量" name="capacity" rules={[{required:true}]}>
+                    <Form.Item label="容量" name="capacity" rules={[{required:true, message: '请确认容量' }]}>
                         <Input type="number" />
                     </Form.Item>
+                    <Form.Item label="位置" name="location" rules={[{ required: true, message: '请选择餐桌位置' }]}>
+                        <Select>
+                            <Select.Option value="TERRACE">露台</Select.Option>
+                            <Select.Option value="HALL_EAST">大厅东</Select.Option>
+                            <Select.Option value="HALL_WEST">大厅西</Select.Option>
+                            <Select.Option value="MAIN_HALL">中央大厅</Select.Option>
+                        </Select>
+                    </Form.Item>
                     <Form.Item label="状态" name="status" rules={[{required:true}]}>
-                        <Input />
+                        <Select>
+                            <Select.Option value="AVAILABLE">AVAILABLE</Select.Option>
+                            <Select.Option value="RESERVED">RESERVED</Select.Option>
+                            <Select.Option value="IN_USE">IN_USE</Select.Option>
+                        </Select>
                     </Form.Item>
                     <Button type="primary" htmlType="submit">
                         保存
@@ -125,7 +153,6 @@ export default function Tables() {
                 </Form>
             </Modal>
 
-            {/* 新增弹窗 */}
             <Modal
                 title="添加餐桌"
                 open={addModal}
@@ -133,14 +160,23 @@ export default function Tables() {
                 footer={null}
             >
                 <Form layout="vertical" onFinish={handleAddSave}>
-                    <Form.Item label="桌名" name="tableName" rules={[{required:true}]}>
+                    <Form.Item label="桌名" name="tableName" rules={[{required:true, message: '请添加桌名' }]}>
                         <Input />
                     </Form.Item>
-                    <Form.Item label="容量" name="capacity" rules={[{required:true}]}>
+                    <Form.Item label="容量" name="capacity" rules={[{required:true, message: '请确认容量' }]}>
                         <Input type="number" />
                     </Form.Item>
-                    <Form.Item label="状态" name="status" initialValue="AVAILABLE">
-                        <Input />
+                    <Form.Item
+                        label="位置"
+                        name="location"
+                        rules={[{ required: true, message: '请选择餐桌位置' }]}
+                    >
+                        <Select>
+                            <Select.Option value="TERRACE">露台</Select.Option>
+                            <Select.Option value="HALL_EAST">大厅东</Select.Option>
+                            <Select.Option value="HALL_WEST">大厅西</Select.Option>
+                            <Select.Option value="MAIN_HALL">中央大厅</Select.Option>
+                        </Select>
                     </Form.Item>
                     <Button type="primary" htmlType="submit">添加</Button>
                 </Form>

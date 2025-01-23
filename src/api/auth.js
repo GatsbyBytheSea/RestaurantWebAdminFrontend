@@ -13,7 +13,6 @@ export async function adminLogin(username, password) {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
-        // 关键：允许跨域带cookie（session）
         withCredentials: true
     })
 }
