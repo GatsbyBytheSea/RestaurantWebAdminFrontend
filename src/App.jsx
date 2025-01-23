@@ -6,6 +6,7 @@ import AdminLayout from './components/AdminLayout'
 import Reservations from './pages/Reservations'
 import Tables from './pages/Tables'
 import Dashboard from './pages/Dashboard'
+import DishManagement from "./pages/DishManagement.jsx";
 
 export default function App() {
     return (
@@ -22,6 +23,8 @@ export default function App() {
                     <Route index element={<Dashboard />} />
                     <Route path="reservations" element={<Reservations />} />
                     <Route path="tables" element={<Tables />} />
+                    <Route path="dishes" element={<DishManagement />} />
+
                 </Route>
             </Routes>
         </BrowserRouter>

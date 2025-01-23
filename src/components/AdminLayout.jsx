@@ -7,9 +7,6 @@ const { Header, Sider, Content } = Layout
 export default function AdminLayout() {
     const navigate = useNavigate()
 
-    // 如果需要检查是否登录，可以在这里判断 localStorage token
-    // if (!localStorage.getItem('token')) { navigate('/login') }
-
     return (
         <Layout style={{ minHeight: '100vh' }}>
             <Sider>
@@ -26,14 +23,12 @@ export default function AdminLayout() {
                     <Menu.Item key="tables">
                         <Link to="/tables">餐桌管理</Link>
                     </Menu.Item>
+                    <Menu.Item key="dishes">
+                        <Link to="/dishes">菜品管理</Link>
+                    </Menu.Item>
                 </Menu>
             </Sider>
             <Layout>
-
-                {/*<Header style={{ background: '#fff', textAlign: 'right', paddingRight: '20px' }}>*/}
-                {/*<Button type="primary" onClick={() => { localStorage.removeItem('token'); navigate('/login') }}>退出</Button>*/}
-                {/*</Header>*/}
-
                 <Content style={{ margin: '16px' }}>
                     <Outlet />
                 </Content>
