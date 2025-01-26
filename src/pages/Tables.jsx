@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import {Table, Button, message, Modal, Form, Input, Tag, Divider, Select} from 'antd'
 import { getAllTables, updateTableStatus, addTable, deleteTable, updateTable } from '../api/tables.js'
-import TableVisualization from '../components/TableVisualization'
+import TableVisualization from '../components/table/TableVisualization.jsx'
 
 export default function Tables() {
     const [data, setData] = useState([])
