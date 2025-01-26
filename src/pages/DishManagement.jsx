@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Modal, Form, Input, Select, message, Upload } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
-import { getAllDishes, createDish, updateDish, deleteDish, uploadDishImage } from '../api/dishes'
+import {
+    getAllDishes,
+    createDish,
+    updateDish,
+    deleteDish,
+    uploadDishImage
+} from '../api/dishes'
 
 export default function DishManagement() {
     const [dishes, setDishes] = useState([])
@@ -13,7 +19,9 @@ export default function DishManagement() {
     const [addForm] = Form.useForm()
     const [editForm] = Form.useForm()
 
-    // 获取菜品列表
+    const [addFileList, setAddFileList] = useState([])
+    const [editFileList, setEditFileList] = useState([])
+
     const fetchDishes = async () => {
         setLoading(true)
         try {
@@ -29,16 +37,29 @@ export default function DishManagement() {
         fetchDishes()
     }, [])
 
-    // 当点击编辑时，给编辑表单赋值
     useEffect(() => {
         if (editModal.visible && editModal.record) {
             editForm.setFieldsValue(editModal.record)
+
+            if (editModal.record.imageUrl) {
+                setEditFileList([
+                    {
+                        uid: 'existing',
+                        name: '已上传图片',
+                        status: 'done',
+                        url: editModal.record.imageUrl,
+                        response: editModal.record.imageUrl // 用于后续 onChange 里统一解析
+                    }
+                ])
+            } else {
+                setEditFileList([])
+            }
         } else {
             editForm.resetFields()
+            setEditFileList([])
         }
     }, [editModal, editForm])
 
-    // 删除菜品
     const handleDelete = async (id) => {
         if (!window.confirm('确认删除此菜品？')) return
         try {
@@ -50,19 +71,20 @@ export default function DishManagement() {
         }
     }
 
-    // 处理添加菜品
     const handleAddFinish = async (values) => {
         try {
             await createDish(values)
             message.success('添加成功')
             setAddModal(false)
+            // 重置表单、清空fileList
+            addForm.resetFields()
+            setAddFileList([])
             fetchDishes()
         } catch (err) {
             message.error('添加失败')
         }
     }
 
-    // 处理编辑菜品
     const handleEditFinish = async (values) => {
         try {
             await updateDish(editModal.record.id, values)
@@ -74,29 +96,113 @@ export default function DishManagement() {
         }
     }
 
-    // 上传图片
-    // 后端返回图片地址，前端将地址赋值给表单字段
-    const handleUpload = async (file, callback) => {
+    // 自定义上传函数在选文件时触发
+    const customUpload = async (options) => {
+        const { file, onSuccess, onError } = options
         try {
+            // 调用你封装好的接口
             const res = await uploadDishImage(file)
-            callback(res.data)  // res.data为后端返回的imageUrl
+            // 后端返回的地址 res.data
+            onSuccess(res.data, file) // antd会将此值存放到 file.response
         } catch (err) {
-            message.error('图片上传失败')
+            onError(err)
         }
+    }
+
+    // “添加菜品”时使用的 Upload 组件
+    const renderAddUpload = () => {
+        return (
+            <Upload
+                // 一旦选了文件，会自动调用 customRequest 发起上传
+                customRequest={customUpload}
+                listType="picture-card"
+                fileList={addFileList}
+                maxCount={1}
+                // 当上传/删除/出错时，会触发 onChange
+                onChange={(info) => {
+                    const { file, fileList } = info
+                    setAddFileList(fileList)
+
+                    if (file.status === 'done') {
+                        // 上传成功后, 从后端返回的file.response中获取图片地址
+                        if (file.response) {
+                            addForm.setFieldValue('imageUrl', file.response)
+                            message.success('图片上传成功')
+                        }
+                    } else if (file.status === 'removed') {
+                        addForm.setFieldValue('imageUrl', '')
+                    } else if (file.status === 'error') {
+                        message.error('图片上传失败')
+                    }
+                }}
+            >
+                {addFileList.length < 1 && (
+                    <div>
+                        <PlusOutlined />
+                        <div style={{ marginTop: 8 }}>上传图片</div>
+                    </div>
+                )}
+            </Upload>
+        )
+    }
+
+    const renderEditUpload = () => {
+        return (
+            <Upload
+                customRequest={customUpload}
+                listType="picture-card"
+                fileList={editFileList}
+                maxCount={1}
+                onChange={(info) => {
+                    const { file, fileList } = info
+                    setEditFileList(fileList)
+
+                    if (file.status === 'done') {
+                        if (file.response) {
+                            editForm.setFieldValue('imageUrl', file.response)
+                            message.success('图片上传成功')
+                        }
+                    } else if (file.status === 'removed') {
+                        editForm.setFieldValue('imageUrl', '')
+                    } else if (file.status === 'error') {
+                        message.error('图片上传失败')
+                    }
+                }}
+            >
+                {editFileList.length < 1 && (
+                    <div>
+                        <PlusOutlined />
+                        <div style={{ marginTop: 8 }}>上传图片</div>
+                    </div>
+                )}
+            </Upload>
+        )
     }
 
     return (
         <div>
             <h2>菜品管理</h2>
-            <Button type="primary" onClick={() => {
-                addForm.resetFields()
-                setAddModal(true)
-            }}>
+
+            <Button
+                type="primary"
+                onClick={() => {
+                    addForm.resetFields()
+                    setAddFileList([])
+                    setAddModal(true)
+                }}
+            >
                 添加菜品
             </Button>
 
-            <div style={{ marginTop: 16, display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
-                {dishes.map(dish => (
+            <div
+                style={{
+                    marginTop: 16,
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: '16px'
+                }}
+            >
+                {dishes.map((dish) => (
                     <div
                         key={dish.id}
                         style={{
@@ -110,13 +216,15 @@ export default function DishManagement() {
                             color: '#fff'
                         }}
                     >
-                        <div style={{
-                            position: 'absolute',
-                            bottom: 0,
-                            width: '100%',
-                            backgroundColor: 'rgba(0,0,0,0.5)',
-                            padding: '8px'
-                        }}>
+                        <div
+                            style={{
+                                position: 'absolute',
+                                bottom: 0,
+                                width: '100%',
+                                backgroundColor: 'rgba(0,0,0,0.5)',
+                                padding: '8px'
+                            }}
+                        >
                             <h4 style={{ margin: 0 }}>{dish.name}</h4>
                             <p style={{ margin: 0 }}>￥{dish.price}</p>
 
@@ -127,11 +235,7 @@ export default function DishManagement() {
                                 >
                                     编辑
                                 </Button>
-                                <Button
-                                    size="small"
-                                    danger
-                                    onClick={() => handleDelete(dish.id)}
-                                >
+                                <Button size="small" danger onClick={() => handleDelete(dish.id)}>
                                     删除
                                 </Button>
                             </div>
@@ -143,7 +247,11 @@ export default function DishManagement() {
             <Modal
                 title="添加菜品"
                 open={addModal}
-                onCancel={() => setAddModal(false)}
+                onCancel={() => {
+                    setAddModal(false)
+                    addForm.resetFields()
+                    setAddFileList([])
+                }}
                 footer={null}
             >
                 <Form layout="vertical" form={addForm} onFinish={handleAddFinish}>
@@ -168,29 +276,19 @@ export default function DishManagement() {
                     <Form.Item label="描述" name="description">
                         <Input.TextArea rows={3} />
                     </Form.Item>
-                    <Form.Item label="图片" name="imageUrl">
-                        <Upload
-                            listType="picture-card"
-                            maxCount={1}
-                            beforeUpload={() => false} // 阻止AntD自动上传, 我们手动处理
-                            onChange={async info => {
-                                if (info.file && info.file.originFileObj) {
-                                    const file = info.file.originFileObj
-                                    handleUpload(file, (url) => {
-                                        // 将返回的url赋值给表单字段imageUrl
-                                        addForm.setFieldValue('imageUrl', url)
-                                        message.success('图片上传成功')
-                                    })
-                                }
-                            }}
-                        >
-                            <div>
-                                <PlusOutlined />
-                                <div style={{ marginTop: 8 }}>上传图片</div>
-                            </div>
-                        </Upload>
+
+                    {/* 这里使用自动上传的 Upload */}
+                    <Form.Item label="图片">
+                        {renderAddUpload()}
                     </Form.Item>
-                    <Button type="primary" htmlType="submit">提交</Button>
+                    {/* 隐藏域：存放上传后返回的 imageUrl */}
+                    <Form.Item name="imageUrl" hidden>
+                        <Input />
+                    </Form.Item>
+
+                    <Button type="primary" htmlType="submit">
+                        提交
+                    </Button>
                 </Form>
             </Modal>
 
@@ -222,28 +320,17 @@ export default function DishManagement() {
                     <Form.Item label="描述" name="description">
                         <Input.TextArea rows={3} />
                     </Form.Item>
-                    <Form.Item label="图片" name="imageUrl">
-                        <Upload
-                            listType="picture-card"
-                            maxCount={1}
-                            beforeUpload={() => false}
-                            onChange={async info => {
-                                if (info.file && info.file.originFileObj) {
-                                    const file = info.file.originFileObj
-                                    handleUpload(file, (url) => {
-                                        editForm.setFieldValue('imageUrl', url)
-                                        message.success('图片上传成功')
-                                    })
-                                }
-                            }}
-                        >
-                            <div>
-                                <PlusOutlined />
-                                <div style={{ marginTop: 8 }}>上传图片</div>
-                            </div>
-                        </Upload>
+
+                    <Form.Item label="图片">
+                        {renderEditUpload()}
                     </Form.Item>
-                    <Button type="primary" htmlType="submit">保存</Button>
+                    <Form.Item name="imageUrl" hidden>
+                        <Input />
+                    </Form.Item>
+
+                    <Button type="primary" htmlType="submit">
+                        保存
+                    </Button>
                 </Form>
             </Modal>
         </div>

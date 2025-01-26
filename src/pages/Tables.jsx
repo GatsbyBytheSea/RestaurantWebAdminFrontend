@@ -111,8 +111,6 @@ export default function Tables() {
                 dataSource={data}
                 rowKey="id"
                 loading={loading}
-                pagination={{ pageSize: 6 }}
-
             />
 
             <Modal

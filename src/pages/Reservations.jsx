@@ -264,7 +264,7 @@ export default function Reservations() {
                 dataSource={data}
                 rowKey="id"
                 loading={loading}
-                pagination={{ pageSize: 8 }}
+                pagination={{ pageSize: 10 }}
             />
 
             <Modal
