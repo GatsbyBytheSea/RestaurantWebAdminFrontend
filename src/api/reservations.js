@@ -46,6 +46,6 @@ export function getTodayReservations() {
 }
 
 // 确认预订
-export function confirmReservation(id) {
-    return axios.put(`/api/v1/admin/reservations/${id}/confirm`)
+export function confirmReservation(id, tableId) {
+    return axios.put(`/api/v1/admin/reservations/${id}/confirm`, { tableId })
 }

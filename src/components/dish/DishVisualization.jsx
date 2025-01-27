@@ -53,12 +53,12 @@ function DishVisualization({ dishes, onEdit, onDelete }) {
                                             position: 'absolute',
                                             bottom: 0,
                                             width: '100%',
-                                            backgroundColor: 'rgba(0,0,0,0.35)',
+                                            backgroundColor: 'rgba(0,0,0,0.3)',
                                             padding: '8px'
                                         }}
                                     >
                                         <h4 style={{ margin: '0 0 4px 0' }}>{dish.name}</h4>
-                                        <p style={{ margin: 0 }}>￥{dish.price}</p>
+                                        <p style={{ margin: 0 }}>€{dish.price}</p>
 
                                         <div style={{ marginTop: 8, display: 'flex', gap: '8px' }}>
                                             {/* 编辑按钮 */}

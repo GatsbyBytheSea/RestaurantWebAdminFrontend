@@ -24,3 +24,7 @@ export function deleteTable(id) {
 export function updateTable(id, data) {
     return axios.put(`/api/v1/admin/tables/${id}`, data)
 }
+
+export function getAvailableTables() {
+    return axios.get('/api/v1/admin/tables/available')
+}

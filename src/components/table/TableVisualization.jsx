@@ -6,8 +6,8 @@ export default function TableVisualization({ tables }) {
 
     const getColorByStatus = (status) => {
         switch(status) {
-            case 'IN_USE': return '#108ee9'   // blue
-            case 'RESERVED': return '#f50'  // red
+            case 'RESERVED': return '#108ee9'   // blue
+            case 'IN_USE': return '#f50'  // red
             default: return '#87d068'     // green for AVAILABLE
         }
     }

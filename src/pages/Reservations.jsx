@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Table, Button, message, Input, Space, Select, Tag } from 'antd'
+import { Table, Button, message, Input, Space, Select, Tag, Modal } from 'antd'
 import dayjs from 'dayjs'
 import {
     getAllReservations,
@@ -13,6 +13,7 @@ import {
     updateReservation,
     createReservation,
 } from '../api/reservations.js'
+import { getAvailableTables} from "../api/tables.js";
 
 import CreateReservationModal from '../components/reservation/CreateReservationModal'
 import EditReservationModal from '../components/reservation/EditReservationModal'
@@ -22,6 +23,9 @@ export default function Reservations() {
     const [loading, setLoading] = useState(false)
     const [query, setQuery] = useState('')
     const [statusFilter, setStatusFilter] = useState(null)
+
+    const [availableTables, setAvailableTables] = useState([]);
+    const [selectedTableId, setSelectedTableId] = useState(null);
 
     const [createModalVisible, setCreateModalVisible] = useState(false)
     const [editModalVisible, setEditModalVisible] = useState(false)
@@ -50,6 +54,15 @@ export default function Reservations() {
         setLoading(false)
     }
 
+    const fetchAvailableTables = async () => {
+        try {
+            const res = await getAvailableTables();
+            setAvailableTables(res.data);
+        } catch (err) {
+            message.error('获取可用餐桌失败');
+        }
+    };
+
     // 默认页面加载时拉取当天预订
     useEffect(() => {
         fetchTodayReservations()
@@ -70,8 +83,8 @@ export default function Reservations() {
         { title: '用餐人数', dataIndex: 'numberOfGuests' },
         {
             title: '餐桌',
-            dataIndex: 'tableName',
-            render: (text) => text || '未分配',
+            dataIndex: ['table', 'tableName'],
+            render: (text) =>  <Tag color="green">{text}</Tag>  || '未分配',
         },
         {
             title: '预订时间',
@@ -131,17 +144,51 @@ export default function Reservations() {
         }
     }
 
-    // 确认预订
     const handleConfirm = async (id) => {
-        if (!window.confirm('确认该预订吗？')) return
         try {
-            await confirmReservation(id)
-            message.success('已确认该预订')
-            await fetchTodayReservations()
+            setSelectedTableId(null);
+            const tables = await getAvailableTables();
+            if (tables.data.length === 0) {
+                message.warning('暂无可用餐桌');
+                return;
+            }
+
+            let selectedId = null;
+
+            Modal.confirm({
+                title: '分配餐桌',
+                content: (
+                    <Select
+                        style={{ width: '100%' }}
+                        placeholder="选择要分配的餐桌"
+                        onChange={(value) => (selectedId = value)}
+                    >
+                        {tables.data.map(table => (
+                            <Select.Option key={table.id} value={table.id}>
+                                {table.tableName} (容量: {table.capacity})
+                            </Select.Option>
+                        ))}
+                    </Select>
+                ),
+                onOk: async () => {
+                    if (!selectedId) {
+                        message.error('请分配餐桌');
+                        return;
+                    }
+                    try {
+                        await confirmReservation(id, selectedId); // 使用局部变量
+                        message.success('已确认该预订');
+                        await fetchTodayReservations();
+                    } catch (err) {
+                        message.error('确认失败');
+                    }
+                }
+            });
         } catch (err) {
-            message.error('确认失败')
+            message.error('获取可用餐桌失败');
         }
-    }
+    };
+
 
     // 根据状态筛选
     const handleStatusChange = async (value) => {
