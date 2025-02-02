@@ -1,24 +1,45 @@
-import React from 'react'
-import { Card } from 'antd'
+import React from 'react';
+import { Card, message } from 'antd';
+import { useNavigate } from 'react-router-dom';
+import { createOrder } from '../../api/orders.js';
 
 export default function TableVisualization({ tables }) {
+    const navigate = useNavigate();
 
     const getColorByStatus = (status) => {
-        switch(status) {
-            case 'RESERVED': return '#108ee9'
-            case 'IN_USE': return '#f50'
-            default: return '#87d068'     // green for AVAILABLE
+        switch (status) {
+            case 'RESERVED': return '#108ee9';
+            case 'IN_USE': return '#f50';
+            default: return '#87d068'; // AVAILABLE
         }
-    }
+    };
 
     const grouped = tables.reduce((acc, table) => {
-        const loc = table.location || '未指定区域'
+        const loc = table.location || '未指定区域';
         if (!acc[loc]) {
-            acc[loc] = []
+            acc[loc] = [];
         }
-        acc[loc].push(table)
-        return acc
-    }, {})
+        acc[loc].push(table);
+        return acc;
+    }, {});
+
+    const handleTableClick = async (table) => {
+        if (table.status === 'AVAILABLE' || table.status === 'RESERVED') {
+            try {
+                const res = await createOrder({ tableId: table.id });
+                const order = res.data;
+                navigate(`/orders/detail/${order.id}`);
+            } catch (error) {
+                message.error('创建订单失败，请稍后重试');
+            }
+        } else if (table.status === 'IN_USE') {
+            if (table.currentOrderId) {
+                navigate(`/orders/detail/${table.currentOrderId}`);
+            } else {
+                message.error('无法获取当前订单信息');
+            }
+        }
+    };
 
     return (
         <div>
@@ -29,7 +50,14 @@ export default function TableVisualization({ tables }) {
                         {grouped[loc].map(table => (
                             <Card
                                 key={table.id}
-                                style={{ width: 150,height: 120, background: getColorByStatus(table.status), color: '#fff' }}
+                                style={{
+                                    width: 150,
+                                    height: 120,
+                                    background: getColorByStatus(table.status),
+                                    color: '#fff',
+                                    cursor: 'pointer'
+                                }}
+                                onClick={() => handleTableClick(table)}
                             >
                                 <div>{table.tableName}</div>
                                 <div>容量: {table.capacity}</div>
@@ -40,5 +68,5 @@ export default function TableVisualization({ tables }) {
                 </div>
             ))}
         </div>
-    )
+    );
 }
