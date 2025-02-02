@@ -7,6 +7,9 @@ import Reservations from './pages/Reservations'
 import Tables from './pages/Tables'
 import Dashboard from './pages/Dashboard'
 import DishManagement from "./pages/DishManagement.jsx";
+import Orders from "./pages/Orders.jsx";
+import OrderDetail from "./pages/OrderDetail.jsx";
+import HistoryOrdersPage from "./pages/HistoryOrdersPage.jsx";
 
 export default function App() {
     return (
@@ -24,7 +27,9 @@ export default function App() {
                     <Route path="reservations" element={<Reservations />} />
                     <Route path="tables" element={<Tables />} />
                     <Route path="dishes" element={<DishManagement />} />
-
+                    <Route path="orders" element={<Orders />} />
+                    <Route path="/orders/history" element={<HistoryOrdersPage />} />
+                    <Route path="orders/detail/:orderId" element={<OrderDetail />} />
                 </Route>
             </Routes>
         </BrowserRouter>

@@ -1,6 +1,5 @@
-// src/pages/DishManagement.jsx
 import React, { useEffect, useState } from 'react'
-import { Button, message } from 'antd'
+import {Button, Card, message} from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import {
     getAllDishes,
@@ -77,18 +76,18 @@ export default function DishManagement() {
     }
 
     return (
-        <div>
-            <h2>菜品管理</h2>
+        <div style={{ margin: '8px' }}>
+            <Card title={'菜品管理'} loading={loading}>
+                <Button type="primary" onClick={() => setAddVisible(true)}>
+                    <PlusOutlined /> 添加菜品
+                </Button>
 
-            <Button type="primary" onClick={() => setAddVisible(true)}>
-                <PlusOutlined /> 添加菜品
-            </Button>
-
-            <DishVisualization
-                dishes={dishes}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
-            />
+                <DishVisualization
+                    dishes={dishes}
+                    onEdit={handleEdit}
+                    onDelete={handleDelete}
+                />
+            </Card>
 
             <AddDishModal
                 visible={addVisible}

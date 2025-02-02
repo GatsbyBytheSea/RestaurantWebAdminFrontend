@@ -5,7 +5,7 @@ import {Outlet} from "react-router-dom";
 
 export default function Dashboard() {
     return (
-        <div>
+        <div style={{ margin: '16px' }}>
             <h2>仪表盘</h2>
             <Row gutter={16}>
                 <Col span={8}>

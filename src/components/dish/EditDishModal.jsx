@@ -3,12 +3,7 @@ import { Modal, Form, Input, Select, Button, Upload, message } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import { uploadDishImage } from '../../api/dishes'
 
-export default function EditDishModal({
-                                          visible,
-                                          record,      // 要编辑的菜品对象
-                                          onCancel,
-                                          onFinish,    // 父组件传入的更新逻辑
-                                      }) {
+export default function EditDishModal({ visible, record, onCancel, onFinish }) {
     const [form] = Form.useForm()
     const [fileList, setFileList] = useState([])
 
@@ -80,7 +75,6 @@ export default function EditDishModal({
     const handleSubmit = async () => {
         try {
             const values = await form.validateFields()
-            // 调用父组件传入的 onFinish
             await onFinish(values)
             form.resetFields()
             setFileList([])

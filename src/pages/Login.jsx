@@ -11,10 +11,8 @@ export default function Login() {
     const onFinish = async (values) => {
         setLoading(true)
         try {
-            // 调用表单方式提交
             await adminLogin(values.username, values.password)
             message.success('登录成功')
-            // 跳转到后台首页
             navigate('/')
         } catch (err) {
             message.error('登录失败或用户名密码错误')

@@ -1,9 +1,5 @@
 import axios from 'axios'
 
-/**
- * 使用Form-Data或x-www-form-urlencoded方式提交
- * 以便与Spring Security formLogin()兼容
- */
 export async function adminLogin(username, password) {
     const formData = new URLSearchParams()
     formData.append('username', username)

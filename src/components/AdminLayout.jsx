@@ -26,10 +26,13 @@ export default function AdminLayout() {
                     <Menu.Item key="dishes">
                         <Link to="/dishes">菜品管理</Link>
                     </Menu.Item>
+                    <Menu.Item key="orders">
+                        <Link to="/orders">订单管理</Link>
+                    </Menu.Item>
                 </Menu>
             </Sider>
             <Layout>
-                <Content style={{ margin: '16px' }}>
+                <Content>
                     <Outlet />
                 </Content>
             </Layout>

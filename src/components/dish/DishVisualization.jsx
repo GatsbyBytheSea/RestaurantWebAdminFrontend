@@ -2,11 +2,6 @@ import React from 'react'
 import { Button } from 'antd'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 
-/**
- * @param {Array}   dishes
- * @param {Function} onEdit
- * @param {Function} onDelete
- */
 function DishVisualization({ dishes, onEdit, onDelete }) {
 
     const categories = ['前菜', '主菜', '主食', '甜点', '酒水饮料']
@@ -14,7 +9,6 @@ function DishVisualization({ dishes, onEdit, onDelete }) {
     return (
         <div style={{ marginTop: 16 }}>
             {categories.map((cat) => {
-                // 过滤出当前分类的菜品
                 const catDishes = dishes.filter((dish) => dish.category === cat)
                 if (catDishes.length === 0) {
                     return null
@@ -38,14 +32,14 @@ function DishVisualization({ dishes, onEdit, onDelete }) {
                                     key={dish.id}
                                     style={{
                                         width: 150,
-                                        height: 200,
+                                        height: 180,
                                         backgroundImage: `url(${dish.imageUrl || ''})`,
                                         backgroundSize: 'cover',
                                         backgroundPosition: 'center',
                                         borderRadius: 8,
                                         position: 'relative',
                                         color: '#fff',
-                                        overflow: 'hidden' // 避免子元素超出
+                                        overflow: 'hidden'
                                     }}
                                 >
                                     <div
@@ -61,7 +55,6 @@ function DishVisualization({ dishes, onEdit, onDelete }) {
                                         <p style={{ margin: 0 }}>€{dish.price}</p>
 
                                         <div style={{ marginTop: 8, display: 'flex', gap: '8px' }}>
-                                            {/* 编辑按钮 */}
                                             <Button
                                                 type="primary"
                                                 icon={<EditOutlined />}
@@ -71,7 +64,6 @@ function DishVisualization({ dishes, onEdit, onDelete }) {
                                                 编辑
                                             </Button>
 
-                                            {/* 删除按钮 */}
                                             <Button
                                                 danger
                                                 icon={<DeleteOutlined />}

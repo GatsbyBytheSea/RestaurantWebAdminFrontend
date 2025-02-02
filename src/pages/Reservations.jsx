@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Table, Button, message, Input, Space, Select, Tag, Modal } from 'antd'
+import {Table, Button, message, Input, Space, Select, Tag, Modal, Card} from 'antd'
 import dayjs from 'dayjs'
 import {
     getAllReservations,
@@ -31,7 +31,6 @@ export default function Reservations() {
     const [editModalVisible, setEditModalVisible] = useState(false)
     const [editRecord, setEditRecord] = useState(null)
 
-    // 拉取全部预订列表
     const fetchAll = async () => {
         setLoading(true)
         try {
@@ -63,12 +62,10 @@ export default function Reservations() {
         }
     };
 
-    // 默认页面加载时拉取当天预订
     useEffect(() => {
         fetchTodayReservations()
     }, [])
 
-    // 状态渲染
     const renderStatus = (status) => {
         let color = 'blue'
         if (status === 'CONFIRMED') color = 'green'
@@ -84,7 +81,10 @@ export default function Reservations() {
         {
             title: '餐桌',
             dataIndex: ['table', 'tableName'],
-            render: (text) =>  <Tag color="green">{text}</Tag>  || '未分配',
+            render: (text) =>
+                text ?
+                    <Tag color="green">{text}</Tag> :
+                    <Tag color="red">未分配</Tag>,
         },
         {
             title: '预订时间',
@@ -132,7 +132,6 @@ export default function Reservations() {
         setCreateModalVisible(true)
     }
 
-    // 取消预订
     const handleCancel = async (id) => {
         if (!window.confirm('确定要取消此预订吗？')) return
         try {
@@ -190,7 +189,6 @@ export default function Reservations() {
     };
 
 
-    // 根据状态筛选
     const handleStatusChange = async (value) => {
         setStatusFilter(value)
         if (value) {
@@ -207,7 +205,6 @@ export default function Reservations() {
         }
     }
 
-    // 按电话查询
     const handleSearchPhone = async () => {
         if (!query) return
         setLoading(true)
@@ -220,7 +217,6 @@ export default function Reservations() {
         setLoading(false)
     }
 
-    // 按姓名查询
     const handleSearchName = async () => {
         if (!query) return
         setLoading(true)
@@ -266,44 +262,45 @@ export default function Reservations() {
     }
 
     return (
-        <div>
-            <h2>预订管理</h2>
-            <div style={{ display: 'flex', marginBottom: 16, gap: 8 }}>
-                <Button type="primary" onClick={openCreateModal}>
-                    创建预订
-                </Button>
-                <Button onClick={fetchTodayReservations}>今日预定</Button>
-                <Input
-                    placeholder="查询条件"
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    style={{ width: 200 }}
-                />
-                <Button onClick={handleSearchPhone}>按电话查询</Button>
-                <Button onClick={handleSearchName}>按姓名查询</Button>
-                <Select
-                    value={statusFilter}
-                    onChange={handleStatusChange}
-                    style={{ width: 120 }}
-                    placeholder="按状态查询"
-                    allowClear
-                >
-                    <Select.Option value="CREATED">被创建</Select.Option>
-                    <Select.Option value="CONFIRMED">确认</Select.Option>
-                    <Select.Option value="CANCELLED">被取消</Select.Option>
-                </Select>
-                <Button onClick={fetchAll} style={{ marginLeft: 'auto' }}>
-                    查看全部预定
-                </Button>
-            </div>
+        <div style={{ margin: '8px' }}>
+            <Card title={'预定管理'}>
+                <div style={{ display: 'flex', marginBottom: 16, gap: 8 }}>
+                    <Button type="primary" onClick={openCreateModal}>
+                        创建预订
+                    </Button>
+                    <Button onClick={fetchTodayReservations}>今日预定</Button>
+                    <Input
+                        placeholder="查询条件"
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                        style={{ width: 200 }}
+                    />
+                    <Button onClick={handleSearchPhone}>按电话查询</Button>
+                    <Button onClick={handleSearchName}>按姓名查询</Button>
+                    <Select
+                        value={statusFilter}
+                        onChange={handleStatusChange}
+                        style={{ width: 120 }}
+                        placeholder="按状态查询"
+                        allowClear
+                    >
+                        <Select.Option value="CREATED">被创建</Select.Option>
+                        <Select.Option value="CONFIRMED">确认</Select.Option>
+                        <Select.Option value="CANCELLED">被取消</Select.Option>
+                    </Select>
+                    <Button onClick={fetchAll} style={{ marginLeft: 'auto' }}>
+                        查看全部预定
+                    </Button>
+                </div>
 
-            <Table
-                columns={columns}
-                dataSource={data}
-                rowKey="id"
-                loading={loading}
-                pagination={{ pageSize: 10 }}
-            />
+                <Table
+                    columns={columns}
+                    dataSource={data}
+                    rowKey="id"
+                    loading={loading}
+                    pagination={{ pageSize: 10 }}
+                />
+            </Card>
 
             <CreateReservationModal
                 open={createModalVisible}

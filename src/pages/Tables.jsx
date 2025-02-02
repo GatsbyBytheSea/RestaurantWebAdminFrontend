@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import {Table, Button, message, Modal, Form, Input, Tag, Divider, Select} from 'antd'
-import { getAllTables, updateTableStatus, addTable, deleteTable, updateTable } from '../api/tables.js'
+import {Table, Button, message, Divider, Tag, Card} from 'antd'
+import { getAllTables, updateTable, addTable, deleteTable } from '../api/tables.js'
 import TableVisualization from '../components/table/TableVisualization.jsx'
+import TableFormModal from '../components/table/TableFormModal.jsx'
 
 export default function Tables() {
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
-    const [editModal, setEditModal] = useState({visible:false, record:null})
-    const [addModal, setAddModal] = useState(false)
 
-    const [editForm] = Form.useForm()
+
+    const [modalState, setModalState] = useState({
+        visible: false,
+        isEdit: false,
+        record: null
+    })
 
     const fetchTables = async () => {
         setLoading(true)
@@ -26,18 +30,56 @@ export default function Tables() {
         fetchTables()
     }, [])
 
-    useEffect(() => {
-        if (editModal.visible && editModal.record) {
-            editForm.setFieldsValue({
-                tableName: editModal.record.tableName,
-                capacity: editModal.record.capacity,
-                location: editModal.record.location,
-                status: editModal.record.status
-            })
-        } else {
-            editForm.resetFields()
+    const handleEdit = (record) => {
+        setModalState({
+            visible: true,
+            isEdit: true,
+            record
+        })
+    }
+
+    const handleAdd = () => {
+        setModalState({
+            visible: true,
+            isEdit: false,
+            record: null
+        })
+    }
+
+    const handleModalCancel = () => {
+        setModalState({
+            visible: false,
+            isEdit: false,
+            record: null
+        })
+    }
+
+    const handleModalFinish = async (values) => {
+        try {
+            if (modalState.isEdit && modalState.record) {
+                await updateTable(modalState.record.id, values)
+                message.success('更新成功')
+            } else {
+                await addTable(values)
+                message.success('添加成功')
+            }
+            handleModalCancel()
+            fetchTables()
+        } catch (err) {
+            message.error(modalState.isEdit ? '更新失败' : '添加失败')
         }
-    }, [editModal, editForm])
+    }
+
+    const handleDelete = async (id) => {
+        if (!window.confirm('确认删除此餐桌？')) return
+        try {
+            await deleteTable(id)
+            message.success('删除成功')
+            fetchTables()
+        } catch (err) {
+            message.error('删除失败')
+        }
+    }
 
     const columns = [
         { title: '桌名', dataIndex: 'tableName' },
@@ -57,128 +99,51 @@ export default function Tables() {
             title: '操作',
             render: (record) => (
                 <>
-                    <Button color="blue" variant="outlined" onClick={() => setEditModal({visible:true, record})} style={{marginRight:8}}>编辑</Button>
-                    <Button danger onClick={() => handleDelete(record.id)}>删除</Button>
+                    <Button
+                        color="blue" variant="outlined"
+                        style={{ marginRight: 8 }}
+                        onClick={() => handleEdit(record)}
+                    >
+                        编辑
+                    </Button>
+                    <Button danger onClick={() => handleDelete(record.id)}>
+                        删除
+                    </Button>
                 </>
             )
         }
     ]
 
-    const handleDelete = async (id) => {
-        if(!window.confirm('确认删除此餐桌？')) return
-        try {
-            await deleteTable(id)
-            message.success('删除成功')
-            fetchTables()
-        } catch (err) {
-            message.error('删除失败')
-        }
-    }
-
-    const handleEditSave = async (values) => {
-        try {
-            await updateTable(editModal.record.id, values)
-            message.success('更新成功')
-            setEditModal({visible:false, record:null})
-            fetchTables()
-        } catch (err) {
-            message.error('更新失败')
-        }
-    }
-
-    const handleAddSave = async (values) => {
-        try {
-            await addTable(values)
-            message.success('添加成功')
-            setAddModal(false)
-            fetchTables()
-        } catch (err) {
-            message.error('添加失败')
-        }
-    }
-
     return (
-        <div>
-            <h2>餐桌管理</h2>
-            <TableVisualization tables={data} />
-            <Divider style={{ margin: '32px 0' }} />
-            <Button type="primary" onClick={() => setAddModal(true)} style={{marginBottom:16}}>
-                添加餐桌
-            </Button>
+        <div style={{ margin: '8px' }}>
+            <Card title={'餐桌管理'} style={{  padding: '0px' }}>
+                <TableVisualization tables={data} />
 
-            <Table
-                columns={columns}
-                dataSource={data}
-                rowKey="id"
-                loading={loading}
-            />
+                <Divider style={{ margin: '32px 0' }} />
 
-            <Modal
-                title="编辑餐桌"
-                open={editModal.visible}
-                onCancel={() => setEditModal({visible:false, record:null})}
-                footer={null}
-            >
-                <Form
-                    layout="vertical"
-                    form={editForm}
-                    onFinish={handleEditSave}
+                <Button
+                    type="primary"
+                    onClick={handleAdd}
+                    style={{ marginBottom: 16 }}
                 >
-                    <Form.Item label="桌名" name="tableName" rules={[{required:true, message: '请添加桌名' }]}>
-                        <Input />
-                    </Form.Item>
-                    <Form.Item label="容量" name="capacity" rules={[{required:true, message: '请确认容量' }]}>
-                        <Input type="number" />
-                    </Form.Item>
-                    <Form.Item label="位置" name="location" rules={[{ required: true, message: '请选择餐桌位置' }]}>
-                        <Select>
-                            <Select.Option value="TERRACE">露台</Select.Option>
-                            <Select.Option value="HALL_EAST">大厅东</Select.Option>
-                            <Select.Option value="HALL_WEST">大厅西</Select.Option>
-                            <Select.Option value="MAIN_HALL">中央大厅</Select.Option>
-                        </Select>
-                    </Form.Item>
-                    <Form.Item label="状态" name="status" rules={[{required:true}]}>
-                        <Select>
-                            <Select.Option value="AVAILABLE">AVAILABLE</Select.Option>
-                            <Select.Option value="RESERVED">RESERVED</Select.Option>
-                            <Select.Option value="IN_USE">IN_USE</Select.Option>
-                        </Select>
-                    </Form.Item>
-                    <Button type="primary" htmlType="submit">
-                        保存
-                    </Button>
-                </Form>
-            </Modal>
+                    添加餐桌
+                </Button>
 
-            <Modal
-                title="添加餐桌"
-                open={addModal}
-                onCancel={() => setAddModal(false)}
-                footer={null}
-            >
-                <Form layout="vertical" onFinish={handleAddSave}>
-                    <Form.Item label="桌名" name="tableName" rules={[{required:true, message: '请添加桌名' }]}>
-                        <Input />
-                    </Form.Item>
-                    <Form.Item label="容量" name="capacity" rules={[{required:true, message: '请确认容量' }]}>
-                        <Input type="number" />
-                    </Form.Item>
-                    <Form.Item
-                        label="位置"
-                        name="location"
-                        rules={[{ required: true, message: '请选择餐桌位置' }]}
-                    >
-                        <Select>
-                            <Select.Option value="TERRACE">露台</Select.Option>
-                            <Select.Option value="HALL_EAST">大厅东</Select.Option>
-                            <Select.Option value="HALL_WEST">大厅西</Select.Option>
-                            <Select.Option value="MAIN_HALL">中央大厅</Select.Option>
-                        </Select>
-                    </Form.Item>
-                    <Button type="primary" htmlType="submit">添加</Button>
-                </Form>
-            </Modal>
+                <Table
+                    columns={columns}
+                    dataSource={data}
+                    rowKey="id"
+                    loading={loading}
+                />
+
+                <TableFormModal
+                    open={modalState.visible}
+                    title={modalState.isEdit ? '编辑餐桌' : '添加餐桌'}
+                    initialValues={modalState.record || {}}
+                    onCancel={handleModalCancel}
+                    onFinish={handleModalFinish}
+                />
+            </Card>
         </div>
     )
 }
