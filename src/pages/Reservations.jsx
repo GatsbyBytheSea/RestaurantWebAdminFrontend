@@ -23,8 +23,6 @@ export default function Reservations() {
     const [loading, setLoading] = useState(false)
     const [query, setQuery] = useState('')
     const [statusFilter, setStatusFilter] = useState(null)
-
-    const [availableTables, setAvailableTables] = useState([]);
     const [selectedTableId, setSelectedTableId] = useState(null);
 
     const [createModalVisible, setCreateModalVisible] = useState(false)
@@ -52,16 +50,6 @@ export default function Reservations() {
         }
         setLoading(false)
     }
-
-    const fetchAvailableTables = async () => {
-        try {
-            const res = await getAvailableTables();
-            setAvailableTables(res.data);
-        } catch (err) {
-            message.error('获取可用餐桌失败');
-        }
-    };
-
     useEffect(() => {
         fetchTodayReservations()
     }, [])

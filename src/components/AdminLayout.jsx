@@ -9,7 +9,14 @@ export default function AdminLayout() {
 
     return (
         <Layout style={{ minHeight: '100vh' }}>
-            <Sider>
+            <Sider
+                style={{
+                position: 'fixed',
+                left: 0,
+                top: 0,
+                bottom: 0,
+                width: 200,  // 固定宽度，根据需要调整
+            }}>
                 <div style={{ color: '#fff', textAlign: 'center', padding: '16px' }}>
                     <h2 style={{ color: '#fff' }}>Midnight Dinner</h2>
                 </div>
@@ -31,7 +38,7 @@ export default function AdminLayout() {
                     </Menu.Item>
                 </Menu>
             </Sider>
-            <Layout>
+            <Layout style={{ marginLeft: 200 }}>
                 <Content>
                     <Outlet />
                 </Content>

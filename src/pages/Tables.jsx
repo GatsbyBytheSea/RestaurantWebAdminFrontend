@@ -25,7 +25,7 @@ export default function Tables() {
     }, [])
     return (
         <div style={{ margin: '8px' }}>
-            <Card title={'餐桌管理'} style={{  padding: '0px' }}>
+            <Card title={'餐桌管理'} style={{ padding: '0px', height: '100%' }} >
                 <Button type="primary" style={{ marginBottom: 16 }} onClick={() => navigate('/tables/edit-layout')}>
                     编辑餐桌
                 </Button>

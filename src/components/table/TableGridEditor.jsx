@@ -1,63 +1,42 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import Draggable from 'react-draggable';
 
-const TableGridEditor = ({ tables, onGridClick, onDragStop, gridCols, gridRows }) => {
-
-    const containerRef = useRef(null);
-    const [cellSize, setCellSize] = useState(60);
-
-    const updateCellSize = () => {
-        if (containerRef.current) {
-            const containerWidth = containerRef.current.offsetWidth;
-            const newCellSize = containerWidth / gridCols;
-            setCellSize(newCellSize);
-        }
-    };
-
-    useEffect(() => {
-        updateCellSize();
-        window.addEventListener('resize', updateCellSize);
-        return () => {
-            window.removeEventListener('resize', updateCellSize);
-        };
-    }, [gridCols]);
-
+const TableGridEditor = ({ tables, onGridClick, onDragStop, gridCols, gridRows, cellWidth, cellHeight }) => {
     return (
-        <div style={{ margin: '8px' }} >
+        <div>
             <div
-                ref={containerRef}
                 style={{
                     position: 'relative',
-                    width: '100%',
-                    height: gridRows * cellSize,
+                    width: gridCols * cellWidth,
+                    height: gridRows * cellHeight,
                     border: '2px solid #ddd',
                     borderRadius: '4px',
                     background: '#f7f7f7',
                     backgroundImage:
                         'linear-gradient(90deg, #e0e0e0 1px, transparent 1px), linear-gradient(180deg, #e0e0e0 1px, transparent 1px)',
-                    backgroundSize: `${cellSize}px ${cellSize}px`
+                    backgroundSize: `${cellWidth}px ${cellHeight}px`
                 }}
                 onClick={onGridClick}
             >
                 {tables.map(table => (
                     <Draggable
                         key={table.id}
-                        grid={[cellSize, cellSize]}
-                        defaultPosition={{ x: table.gridX * cellSize, y: table.gridY * cellSize }}
+                        grid={[cellWidth, cellHeight]}
+                        defaultPosition={{ x: table.gridX * cellWidth, y: table.gridY * cellHeight }}
                         onStop={(e, data) => onDragStop(e, data, table)}
                     >
                         <div
                             onClick={(e) => e.stopPropagation()}
                             style={{
                                 position: 'absolute',
-                                width: table.gridWidth * cellSize,
-                                height: table.gridHeight * cellSize,
+                                width: table.gridWidth * cellWidth,
+                                height: table.gridHeight * cellHeight,
                                 background:
                                     table.status === 'AVAILABLE'
-                                        ? '#87d068'
+                                        ? '#10b981'
                                         : table.status === 'RESERVED'
-                                            ? '#108ee9'
-                                            : '#f50',
+                                            ? '#3b82f6'
+                                            : '#ef4444',
                                 color: '#fff',
                                 display: 'flex',
                                 alignItems: 'center',

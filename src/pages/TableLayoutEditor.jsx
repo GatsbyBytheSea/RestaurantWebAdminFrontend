@@ -8,8 +8,8 @@ import TableGroupList from '../components/table/TableGroupList';
 
 const GRID_COLS = 8;
 const GRID_ROWS = 8;
-const CELL_WIDTH = 60;
-const CELL_HEIGHT = 60;
+const CELL_WIDTH = 75;
+const CELL_HEIGHT = 75;
 const LOCATIONS = ['TERRACE', 'HALL_EAST', 'HALL_WEST', 'MAIN_HALL'];
 
 export default function TableLayoutEditor() {
