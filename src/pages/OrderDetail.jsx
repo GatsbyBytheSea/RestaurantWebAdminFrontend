@@ -114,7 +114,7 @@ export default function OrderDetail() {
 
     return (
         <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
-            <div style={{ background: '#000', borderBottom: '1px solid #ddd', padding: '16px' }}>
+            <div style={{ background: '#001529', borderBottom: '1px solid #ddd', padding: '16px' }}>
                 <Space style={{ width: '100%', justifyContent: 'space-between' }}>
                     <Button type="default" onClick={() => navigate('/orders')}>
                         返回订单列表

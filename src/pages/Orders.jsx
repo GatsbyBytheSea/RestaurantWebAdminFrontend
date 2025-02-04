@@ -195,7 +195,7 @@ export default function Orders() {
     ];
 
     return (
-        <div style={{ margin: '16px' }}>
+        <div style={{ margin: '8px' }}>
             <Card title="订单管理" bodyStyle={{ padding: '16px' }}>
                 <Space style={{ marginBottom: 16 }}>
                     <Button type="primary" onClick={handleCreateOrder}>

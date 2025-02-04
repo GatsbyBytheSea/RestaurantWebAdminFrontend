@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Button, Card, Space, Tag, message } from 'antd';
+import { Table, Button, Card, Tag, message } from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
 import queryString from 'query-string';
 import { getHistoricalClosedOrders, getHistoricalSales } from '../api/orders';
@@ -91,7 +91,7 @@ const HistoryOrdersPage = () => {
     return (
         <div>
             <div style={{height: '100vh', display: 'flex', flexDirection: 'column'}}>
-                <div style={{background: '#000', borderBottom: '1px solid #ddd', padding: '16px'}}>
+                <div style={{background: '#001529', borderBottom: '1px solid #ddd', padding: '16px'}}>
                     <Button type="default" onClick={() => navigate('/orders')}>
                         返回
                     </Button>

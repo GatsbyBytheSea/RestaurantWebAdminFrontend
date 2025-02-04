@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
-import { Modal, Form, Input, Select, Button } from 'antd'
-
+import { Modal, Form, Input, InputNumber, Select, Button } from 'antd'
 
 export default function TableFormModal({
                                            open,
@@ -13,7 +12,13 @@ export default function TableFormModal({
 
     useEffect(() => {
         if (open && initialValues) {
-            form.setFieldsValue(initialValues)
+            form.setFieldsValue({
+                gridX: initialValues.gridX || 0,
+                gridY: initialValues.gridY || 0,
+                gridWidth: initialValues.gridWidth || 1,
+                gridHeight: initialValues.gridHeight || 1,
+                ...initialValues
+            })
         } else {
             form.resetFields()
         }
@@ -75,6 +80,35 @@ export default function TableFormModal({
                         <Select.Option value="RESERVED">RESERVED</Select.Option>
                         <Select.Option value="IN_USE">IN_USE</Select.Option>
                     </Select>
+                </Form.Item>
+
+                <Form.Item
+                    label="X 坐标"
+                    name="gridX"
+                    rules={[{ required: true, message: '请提供 X 坐标' }]}
+                >
+                    <InputNumber disabled style={{ width: '100%' }} />
+                </Form.Item>
+                <Form.Item
+                    label="Y 坐标"
+                    name="gridY"
+                    rules={[{ required: true, message: '请提供 Y 坐标' }]}
+                >
+                    <InputNumber disabled style={{ width: '100%' }} />
+                </Form.Item>
+                <Form.Item
+                    label="横向大小"
+                    name="gridWidth"
+                    rules={[{ required: true, message: '请提供横向占用格数' }]}
+                >
+                    <InputNumber min={1} style={{ width: '100%' }} />
+                </Form.Item>
+                <Form.Item
+                    label="纵向大小"
+                    name="gridHeight"
+                    rules={[{ required: true, message: '请提供纵向占用格数' }]}
+                >
+                    <InputNumber min={1} style={{ width: '100%' }} />
                 </Form.Item>
 
                 <div style={{ textAlign: 'right' }}>

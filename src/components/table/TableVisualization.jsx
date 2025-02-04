@@ -49,6 +49,7 @@ export default function TableVisualization({ tables }) {
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                         {grouped[loc].map(table => (
                             <Card
+                                hoverable
                                 key={table.id}
                                 style={{
                                     width: 150,

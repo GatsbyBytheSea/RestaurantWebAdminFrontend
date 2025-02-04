@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button, Layout, Menu} from 'antd'
+import {Layout, Menu} from 'antd'
 import { Outlet, useNavigate, Link } from 'react-router-dom'
 
 const { Header, Sider, Content } = Layout
