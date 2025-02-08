@@ -1,6 +1,7 @@
 import React from 'react'
 import {Layout, Menu} from 'antd'
 import { Outlet, useNavigate, Link } from 'react-router-dom'
+import logo from '../assets/logo.png'
 
 const { Header, Sider, Content } = Layout
 
@@ -18,7 +19,7 @@ export default function AdminLayout() {
                 width: 200,  // 固定宽度，根据需要调整
             }}>
                 <div style={{ color: '#fff', textAlign: 'center', padding: '16px' }}>
-                    <h2 style={{ color: '#fff' }}>Midnight Dinner</h2>
+                    <img src={logo} alt="Midnight Dinner Logo" style={{width: '100%'}}/>
                 </div>
                 <Menu theme="dark" mode="inline">
                     <Menu.Item key="dashboard">
