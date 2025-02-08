@@ -6,7 +6,7 @@ import {
     createDish,
     updateDish,
     deleteDish,
-} from '../api/dishes'
+} from '../api/dishesAPi.js'
 
 import DishVisualization from '../components/dish/DishVisualization'
 import AddDishModal from '../components/dish/AddDishModal'
@@ -53,7 +53,7 @@ export default function DishManagement() {
         try {
             await createDish(values)
             message.success('添加成功')
-            setAddVisible(false) // 关闭弹窗
+            setAddVisible(false)
             fetchDishes()
         } catch (err) {
             message.error('添加失败')
@@ -92,7 +92,7 @@ export default function DishManagement() {
             <AddDishModal
                 visible={addVisible}
                 onCancel={() => setAddVisible(false)}
-                onFinish={handleAddFinish}  // 点击提交后执行
+                onFinish={handleAddFinish}
             />
 
             <EditDishModal

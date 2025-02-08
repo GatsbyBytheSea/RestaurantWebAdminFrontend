@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Modal, Form, Input, Select, Button, Upload, message } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
-import { uploadDishImage } from '../../api/dishes'
+import { uploadDishImage } from '../../api/dishesAPi.js'
 
 export default function EditDishModal({ visible, record, onCancel, onFinish }) {
     const [form] = Form.useForm()

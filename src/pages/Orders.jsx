@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Button, Form, message, Card, Space, Tag } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { getAvailableTables } from '../api/tables.js';
-import { getOrders, createOrder, closeOrder, getTodayClosedOrders, getTodaySales } from '../api/orders';
+import { getAvailableTables } from '../api/tablesAPi.js';
+import { getOrders, createOrder, closeOrder, getTodayClosedOrders, getTodaySales } from '../api/ordersAPi.js';
 import CloseOrderModal from '../components/order/CloseOrderModal';
 import CreateOrderModal from "../components/order/CreateOrderModal.jsx";
 import OrderDetailModal from "../components/order/OrderDetailModal.jsx";

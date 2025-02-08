@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { message } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { createOrder } from '../../api/orders';
+import { createOrder } from '../../api/ordersAPi.js';
 
 const TableVisualization = ({ tables }) => {
     const navigate = useNavigate();

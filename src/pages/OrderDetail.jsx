@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { Row, Col, Button, message, Space, Form } from 'antd'
-import { getOrderById, getOrderItems, addItemsToOrder, removeOrderItem, closeOrder } from '../api/orders'
-import { getAllDishes } from '../api/dishes.js'
+import { getOrderById, getOrderItems, addItemsToOrder, removeOrderItem, closeOrder } from '../api/ordersAPi.js'
+import { getAllDishes } from '../api/dishesAPi.js'
 import CloseOrderModal from '../components/order/CloseOrderModal'
 import AddDishModal from '../components/order/AddDishModal'
 import OrderItemsPanel from "../components/order/OrderItemsPanel.jsx";
@@ -57,7 +57,6 @@ export default function OrderDetail() {
         fetchOrder()
         fetchOrderItems()
         fetchDishes()
-        // eslint-disable-next-line
     }, [orderId])
 
     const handleDishClick = (dish) => {

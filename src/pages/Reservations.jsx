@@ -12,8 +12,8 @@ import {
     getReservationById,
     updateReservation,
     createReservation,
-} from '../api/reservations.js'
-import { getAvailableTables} from "../api/tables.js";
+} from '../api/reservationsAPi.js'
+import { getAvailableTables} from "../api/tablesAPi.js";
 
 import CreateReservationModal from '../components/reservation/CreateReservationModal'
 import EditReservationModal from '../components/reservation/EditReservationModal'

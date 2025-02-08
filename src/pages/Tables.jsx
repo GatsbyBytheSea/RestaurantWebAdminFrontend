@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {Button, message, Card} from 'antd'
-import { getAllTables } from '../api/tables.js'
+import { getAllTables } from '../api/tablesAPi.js'
 import TableVisualization from '../components/table/TableVisualization.jsx'
 import { useNavigate } from 'react-router-dom';
 

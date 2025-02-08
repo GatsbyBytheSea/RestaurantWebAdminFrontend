@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Table, Button, Card, Tag, message } from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
 import queryString from 'query-string';
-import { getHistoricalClosedOrders, getHistoricalSales } from '../api/orders';
+import { getHistoricalClosedOrders, getHistoricalSales } from '../api/ordersAPi.js';
 import OrderDetailModal from '../components/order/OrderDetailModal';
 
 const HistoryOrdersPage = () => {

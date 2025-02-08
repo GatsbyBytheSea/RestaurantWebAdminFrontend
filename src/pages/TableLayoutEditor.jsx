@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {message, Row, Col, Space, Button} from 'antd';
 import { useNavigate } from 'react-router-dom';
 import TableFormModal from '../components/table/TableFormModal';
-import { getAllTables, updateTable, addTable, deleteTable } from '../api/tables';
+import { getAllTables, updateTable, addTable, deleteTable } from '../api/tablesAPi.js';
 import TableGridEditor from '../components/table/TableGridEditor';
 import TableGroupList from '../components/table/TableGroupList';
 
@@ -15,10 +15,10 @@ const LOCATIONS = ['TERRACE', 'HALL_EAST', 'HALL_WEST', 'MAIN_HALL'];
 export default function TableLayoutEditor() {
     const navigate = useNavigate();
     const [tables, setTables] = useState([]);
-    const [modalVisible, setModalVisible] = useState(false);       // 添加餐桌弹窗
-    const [editModalVisible, setEditModalVisible] = useState(false); // 编辑餐桌弹窗
-    const [newTableGrid, setNewTableGrid] = useState(null);          // 点击空白区域时计算的网格坐标
-    const [currentTable, setCurrentTable] = useState(null);          // 正在编辑的餐桌
+    const [modalVisible, setModalVisible] = useState(false);
+    const [editModalVisible, setEditModalVisible] = useState(false);
+    const [newTableGrid, setNewTableGrid] = useState(null);
+    const [currentTable, setCurrentTable] = useState(null);
 
     const fetchTables = async () => {
         try {

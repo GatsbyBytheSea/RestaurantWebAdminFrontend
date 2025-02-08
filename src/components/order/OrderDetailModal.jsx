@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Table, message } from 'antd';
-import { getOrderItems } from '../../api/orders';
+import { getOrderItems } from '../../api/ordersAPi.js';
 
 const OrderDetailModal = ({ visible, order, onCancel }) => {
     const [orderItems, setOrderItems] = useState([]);

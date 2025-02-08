@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Button, Form, Input, message } from 'antd'
 import { useNavigate } from 'react-router-dom'
 
-import { adminLogin } from '../api/auth.js'
+import { adminLogin } from '../api/authAPi.js'
 
 export default function Login() {
     const [loading, setLoading] = useState(false)
