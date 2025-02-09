@@ -15,13 +15,13 @@ export default function OrderItemsPanel({ orderItems, loading, onRemoveItem }) {
                                 type="text"
                                 onClick={() => onRemoveItem(item.id)}
                             >
-                                删除
+                                Delete
                             </Button>
                         ]}
                     >
                         <List.Item.Meta
                             title={`${item.dish.name} × ${item.quantity}`}
-                            description={`单价: €${item.price} | 小计: €${(item.price * item.quantity).toFixed(2)}`}
+                            description={`Price: €${item.price} | Subtotal: €${(item.price * item.quantity).toFixed(2)}`}
                         />
                     </List.Item>
                 )}

@@ -67,7 +67,7 @@ export default function EditReservationModal({
 
     return (
         <Modal
-            title="编辑预订"
+            title="Edit Reservation"
             open={open}
             onCancel={() => {
                 form.resetFields()
@@ -78,30 +78,30 @@ export default function EditReservationModal({
         >
             <Form form={form} layout="vertical" onFinish={handleFinish}>
                 <Form.Item
-                    label="顾客姓名"
+                    label="Customer Name"
                     name="customerName"
-                    rules={[{ required: true, message: '请输入顾客姓名' }]}
+                    rules={[{ required: true, message: 'Please enter the customer\'s name' }]}
                 >
                     <Input />
                 </Form.Item>
                 <Form.Item
-                    label="顾客电话"
+                    label="Customer Phone"
                     name="customerPhone"
-                    rules={[{ required: true, message: '请输入顾客电话' }]}
+                    rules={[{ required: true, message: 'Please enter the customer\'s phone number' }]}
                 >
                     <Input />
                 </Form.Item>
                 <Form.Item
-                    label="用餐人数"
+                    label="Number of guests"
                     name="numberOfGuests"
-                    rules={[{ required: true, message: '请输入用餐人数' }]}
+                    rules={[{ required: true, message: 'Please enter the number of guests' }]}
                 >
                     <Input type="number" />
                 </Form.Item>
                 <Form.Item
-                    label="预订时间"
+                    label="Reservation Time"
                     name="reservationTime"
-                    rules={[{ required: true, message: '请选择合法的预订时间' }]}
+                    rules={[{ required: true, message: 'Please select a reservation time' }]}
                 >
                     <DatePicker
                         style={{ width: '100%' }}
@@ -118,16 +118,16 @@ export default function EditReservationModal({
                     />
                 </Form.Item>
                 <Form.Item
-                    label="状态"
+                    label="Status"
                     name="status"
-                    rules={[{ required: true, message: '请输入状态' }]}
+                    rules={[{ required: true, message: 'Please select a status' }]}
                 >
                     <Input />
                 </Form.Item>
 
                 <Form.Item>
                     <Button type="primary" htmlType="submit" loading={loading}>
-                        保存
+                        Update
                     </Button>
                 </Form.Item>
             </Form>

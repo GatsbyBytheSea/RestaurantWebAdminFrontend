@@ -25,7 +25,7 @@ export default function TableLayoutEditor() {
             const res = await getAllTables();
             setTables(res.data);
         } catch (err) {
-            message.error('获取餐桌失败');
+            message.error('Failed to retrieve tables');
         }
     };
 
@@ -43,17 +43,17 @@ export default function TableLayoutEditor() {
             newGridX + table.gridWidth > GRID_COLS ||
             newGridY + table.gridHeight > GRID_ROWS
         ) {
-            message.error('餐桌超出边界');
+            message.error('Table out of bounds');
             fetchTables();
             return;
         }
 
         try {
             await updateTable(table.id, { ...table, gridX: newGridX, gridY: newGridY });
-            message.success('更新成功');
+            message.success('Updated successfully');
             fetchTables();
         } catch (err) {
-            message.error('更新失败');
+            message.error('Update failed');
         }
     };
 
@@ -87,11 +87,11 @@ export default function TableLayoutEditor() {
         };
         try {
             await addTable(newTable);
-            message.success('添加成功');
+            message.success('Added successfully');
             setModalVisible(false);
             fetchTables();
         } catch (err) {
-            message.error('添加失败');
+            message.error('Addition failed');
         }
     };
 
@@ -103,23 +103,23 @@ export default function TableLayoutEditor() {
     const handleEditModalFinish = async (values) => {
         try {
             await updateTable(currentTable.id, { ...currentTable, ...values });
-            message.success('更新成功');
+            message.success('Updated successfully');
             setEditModalVisible(false);
             setCurrentTable(null);
             fetchTables();
         } catch (err) {
-            message.error('更新失败');
+            message.error('Update failed');
         }
     };
 
     const handleDelete = async (id) => {
-        if (!window.confirm('确认删除此餐桌？')) return;
+        if (!window.confirm('Are you sure you want to delete this table?')) return;
         try {
             await deleteTable(id);
-            message.success('删除成功');
+            message.success('Deleted successfully');
             fetchTables();
         } catch (err) {
-            message.error('删除失败');
+            message.error('Deletion failed');
         }
     };
 
@@ -128,9 +128,9 @@ export default function TableLayoutEditor() {
             <div style={{background: '#001529', padding: '16px'}}>
                 <Space style={{width: '100%', justifyContent: 'space-between'}}>
                     <Button type="default" onClick={() => navigate('/tables')}>
-                        返回餐桌管理
+                        Back to table list
                     </Button>
-                    <h2 style={{margin: 0, color: '#fff'}}>编辑餐桌</h2>
+                    <h2 style={{margin: 0, color: '#fff'}}>Edit tables</h2>
                 </Space>
             </div>
 
@@ -161,7 +161,7 @@ export default function TableLayoutEditor() {
             {modalVisible && (
                 <TableFormModal
                     open={modalVisible}
-                    title="添加餐桌"
+                    title="Add table"
                     initialValues={
                         newTableGrid
                             ? {gridX: newTableGrid.gridX, gridY: newTableGrid.gridY, gridWidth: 1, gridHeight: 1}
@@ -175,7 +175,7 @@ export default function TableLayoutEditor() {
             {editModalVisible && (
                 <TableFormModal
                     open={editModalVisible}
-                    title="编辑餐桌"
+                    title="Edit table"
                     initialValues={currentTable}
                     onCancel={() => {
                         setEditModalVisible(false);

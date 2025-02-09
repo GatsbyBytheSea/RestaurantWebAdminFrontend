@@ -15,7 +15,7 @@ export default function Tables() {
             const res = await getAllTables()
             setData(res.data)
         } catch (err) {
-            message.error('获取餐桌失败')
+            message.error('Failed to retrieve tables')
         }
         setLoading(false)
     }
@@ -25,9 +25,9 @@ export default function Tables() {
     }, [])
     return (
         <div style={{ margin: '8px' }}>
-            <Card title={'餐桌管理'} style={{ padding: '0px', height: '100%' }} >
+            <Card title={'Table Management'} style={{ padding: '0px', height: '100%' }} >
                 <Button type="primary" style={{ marginBottom: 16 }} onClick={() => navigate('/tables/edit-layout')}>
-                    编辑餐桌
+                    Edit tables
                 </Button>
                 <TableVisualization tables={data} />
             </Card>

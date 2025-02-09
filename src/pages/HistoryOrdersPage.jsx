@@ -19,7 +19,7 @@ const HistoryOrdersPage = () => {
 
     useEffect(() => {
         if (!date) {
-            message.error("缺少日期参数");
+            message.error("Missing date parameter");
             navigate("/orders");
             return;
         }
@@ -33,7 +33,7 @@ const HistoryOrdersPage = () => {
             const res = await getHistoricalClosedOrders(date);
             setOrders(res.data || []);
         } catch (err) {
-            message.error("加载历史订单失败");
+            message.error("Failed to load historical orders");
         } finally {
             setLoading(false);
         }
@@ -45,7 +45,7 @@ const HistoryOrdersPage = () => {
             const res = await getHistoricalSales(date);
             setSales(res.data.sales);
         } catch (err) {
-            message.error("加载营业额失败");
+            message.error("Failed to load revenue");
         } finally {
             setSalesLoading(false);
         }
@@ -53,36 +53,36 @@ const HistoryOrdersPage = () => {
 
     const columns = [
         {
-            title: '订单ID',
+            title: 'Order ID',
             dataIndex: 'id',
             key: 'id',
         },
         {
-            title: '餐桌名称',
+            title: 'Table Name',
             dataIndex: ['table', 'tableName'],
             render: (text) => <Tag color="green">{text}</Tag>,
         },
         {
-            title: '总金额',
+            title: 'Total Amount',
             dataIndex: 'totalAmount',
             key: 'totalAmount',
             render: (val) => `€ ${val || 0}`,
         },
         {
-            title: '结算时间',
+            title: 'Close Time',
             dataIndex: 'closeTime',
             key: 'closeTime',
             render: (text) => text ? new Date(text).toLocaleString() : ''
         },
         {
-            title: '操作',
+            title: 'Actions',
             key: 'action',
             render: (_, record) => (
                 <Button color="blue" variant="outlined" onClick={() => {
                     setSelectedOrder(record);
                     setViewModalVisible(true);
                 }}>
-                    查看
+                    View
                 </Button>
             )
         }
@@ -93,10 +93,10 @@ const HistoryOrdersPage = () => {
             <div style={{height: '100vh', display: 'flex', flexDirection: 'column'}}>
                 <div style={{background: '#001529', borderBottom: '1px solid #ddd', padding: '16px'}}>
                     <Button type="default" onClick={() => navigate('/orders')}>
-                        返回
+                        Back
                     </Button>
                 </div>
-                <Card title={`历史营业情况 - ${date}`} style={{margin: '8px'}}>
+                <Card title={`Historical Orders - ${date}`} style={{margin: '8px'}}>
                     <Table
                         dataSource={orders}
                         columns={columns}
@@ -105,7 +105,7 @@ const HistoryOrdersPage = () => {
                         pagination={false}
                         footer={() => (
                             <div style={{textAlign: 'right', fontWeight: 'bold'}}>
-                                营业额: € {sales}
+                                Revenue: € {sales}
                             </div>
                         )}
                     />

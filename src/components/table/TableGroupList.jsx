@@ -9,13 +9,13 @@ const TableGroupList = ({ tables, locations, onEdit, onDelete }) => {
 
     const columns = [
         {
-            title: '桌名',
+            title: 'Table Name',
             dataIndex: 'tableName',
             render: (tableName) => <Tag color="green">{tableName}</Tag>
         },
-        { title: '容量', dataIndex: 'capacity' },
+        { title: 'Capacity', dataIndex: 'capacity' },
         {
-            title: '状态',
+            title: 'Status',
             dataIndex: 'status',
             render: (text) => {
                 let color = 'green';
@@ -25,11 +25,11 @@ const TableGroupList = ({ tables, locations, onEdit, onDelete }) => {
             }
         },
         {
-            title: '操作',
+            title: 'Actions',
             render: (record) => (
                 <Space>
-                    <Button color="blue" variant="outlined" onClick={() => onEdit(record)}>编辑</Button>
-                    <Button danger onClick={() => onDelete(record.id)}>删除</Button>
+                    <Button color="blue" variant="outlined" onClick={() => onEdit(record)}>Edit</Button>
+                    <Button danger onClick={() => onDelete(record.id)}>Delete</Button>
                 </Space>
             )
         }

@@ -4,19 +4,19 @@ import { Modal, Button } from 'antd'
 export default function CloseOrderModal({ open, onCancel, onConfirm, order }) {
     return (
         <Modal
-            title={`确认结算订单 #${order?.id || ''}`}
+            title={`Confirm checkout #${order?.id || ''}`}
             open={open}
             onCancel={onCancel}
             footer={null}
         >
-            <p>是否确认结算当前订单？</p>
+            <p>Are you sure you want to settle the current order?</p>
 
             <div style={{ textAlign: 'right' }}>
                 <Button style={{ marginRight: 8 }} onClick={onCancel}>
-                    取消
+                    Cancel
                 </Button>
                 <Button type="primary" onClick={onConfirm}>
-                    确认
+                    Confirm
                 </Button>
             </div>
         </Modal>

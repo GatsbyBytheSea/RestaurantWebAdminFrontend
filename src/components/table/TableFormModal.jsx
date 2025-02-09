@@ -42,38 +42,38 @@ export default function TableFormModal({
         >
             <Form form={form} layout="vertical">
                 <Form.Item
-                    label="桌名"
+                    label="Table Name"
                     name="tableName"
-                    rules={[{ required: true, message: '请添加桌名' }]}
+                    rules={[{ required: true, message: 'Please add a table name' }]}
                 >
                     <Input />
                 </Form.Item>
 
                 <Form.Item
-                    label="容量"
+                    label="Capacity"
                     name="capacity"
-                    rules={[{ required: true, message: '请确认容量' }]}
+                    rules={[{ required: true, message: 'Please confirm the table capacity' }]}
                 >
                     <Input type="number" />
                 </Form.Item>
 
                 <Form.Item
-                    label="位置"
+                    label="Location"
                     name="location"
-                    rules={[{ required: true, message: '请选择餐桌位置' }]}
+                    rules={[{ required: true, message: 'Please select a table location' }]}
                 >
                     <Select>
-                        <Select.Option value="TERRACE">露台</Select.Option>
-                        <Select.Option value="HALL_EAST">大厅东</Select.Option>
-                        <Select.Option value="HALL_WEST">大厅西</Select.Option>
-                        <Select.Option value="MAIN_HALL">中央大厅</Select.Option>
+                        <Select.Option value="TERRACE">Terrace</Select.Option>
+                        <Select.Option value="HALL_EAST">East Hall</Select.Option>
+                        <Select.Option value="HALL_WEST">West Hall</Select.Option>
+                        <Select.Option value="MAIN_HALL">Central Hall</Select.Option>
                     </Select>
                 </Form.Item>
 
                 <Form.Item
-                    label="状态"
+                    label="Status"
                     name="status"
-                    rules={[{ required: true, message: '请选择状态' }]}
+                    rules={[{ required: true, message: 'Please select a status' }]}
                 >
                     <Select>
                         <Select.Option value="AVAILABLE">AVAILABLE</Select.Option>
@@ -83,40 +83,40 @@ export default function TableFormModal({
                 </Form.Item>
 
                 <Form.Item
-                    label="X 坐标"
+                    label="X Coordinate"
                     name="gridX"
-                    rules={[{ required: true, message: '请提供 X 坐标' }]}
+                    rules={[{ required: true, message: 'Please provide the X coordinate' }]}
                 >
                     <InputNumber disabled style={{ width: '100%' }} />
                 </Form.Item>
                 <Form.Item
-                    label="Y 坐标"
+                    label="Y Coordinate"
                     name="gridY"
-                    rules={[{ required: true, message: '请提供 Y 坐标' }]}
+                    rules={[{ required: true, message: 'Please provide the Y coordinate' }]}
                 >
                     <InputNumber disabled style={{ width: '100%' }} />
                 </Form.Item>
                 <Form.Item
-                    label="横向大小"
+                    label="Table Horizontal Width"
                     name="gridWidth"
-                    rules={[{ required: true, message: '请提供横向占用格数' }]}
+                    rules={[{ required: true, message: 'Please provide the horizontal width' }]}
                 >
                     <InputNumber min={1} style={{ width: '100%' }} />
                 </Form.Item>
                 <Form.Item
-                    label="纵向大小"
+                    label="Table Vertical Height"
                     name="gridHeight"
-                    rules={[{ required: true, message: '请提供纵向占用格数' }]}
+                    rules={[{ required: true, message: 'Please provide the vertical width' }]}
                 >
                     <InputNumber min={1} style={{ width: '100%' }} />
                 </Form.Item>
 
                 <div style={{ textAlign: 'right' }}>
                     <Button onClick={onCancel} style={{ marginRight: 8 }}>
-                        取消
+                        Cancel
                     </Button>
                     <Button type="primary" onClick={handleSubmit}>
-                        保存
+                        Save
                     </Button>
                 </div>
             </Form>

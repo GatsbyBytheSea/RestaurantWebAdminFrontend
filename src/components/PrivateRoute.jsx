@@ -16,7 +16,7 @@ export default function PrivateRoute({ children }) {
     }, [])
 
     if (loggedIn === null) {
-        return <div>检查登录状态...</div>
+        return <div>Checking login status...</div>
     }
     if (!loggedIn) {
         return <Navigate to="/login" replace />

@@ -35,7 +35,7 @@ export default function Reservations() {
             const res = await getAllReservations()
             setData(res.data)
         } catch (err) {
-            message.error('获取预订列表失败')
+            message.error('Failed to retrieve reservation list')
         }
         setLoading(false)
     }
@@ -46,7 +46,7 @@ export default function Reservations() {
             const res = await getTodayReservations()
             setData(res.data)
         } catch (err) {
-            message.error('获取今日订单失败')
+            message.error('Failed to retrieve today\'s orders')
         }
         setLoading(false)
     }
@@ -63,41 +63,41 @@ export default function Reservations() {
 
     const columns = [
         { title: 'ID', dataIndex: 'id' },
-        { title: '顾客姓名', dataIndex: 'customerName' },
-        { title: '电话', dataIndex: 'customerPhone' },
-        { title: '用餐人数', dataIndex: 'numberOfGuests' },
+        { title: 'Customer Name', dataIndex: 'customerName' },
+        { title: 'Phone', dataIndex: 'customerPhone' },
+        { title: 'Number of guests', dataIndex: 'numberOfGuests' },
         {
-            title: '餐桌',
+            title: 'Table',
             dataIndex: ['table', 'tableName'],
             render: (text) =>
                 text ?
                     <Tag color="green">{text}</Tag> :
-                    <Tag color="red">未分配</Tag>,
+                    <Tag color="red">Unassigned</Tag>,
         },
         {
-            title: '预订时间',
+            title: 'Reservation Time',
             dataIndex: 'reservationTime',
             render: (time) => (time ? dayjs(time).format('YYYY-MM-DD HH:mm') : ''),
         },
         {
-            title: '修改时间',
+            title: 'Update Time',
             dataIndex: 'updateTime',
             defaultSortOrder: 'descend',
             sorter: (a, b) => dayjs(a.updateTime) - dayjs(b.updateTime),
             render: (time) => (time ? dayjs(time).format('YYYY-MM-DD HH:mm') : ''),
         },
         {
-            title: '状态',
+            title: 'Status',
             dataIndex: 'status',
             render: (status) => renderStatus(status),
         },
         {
-            title: '操作',
+            title: 'Actions',
             render: (record) => (
                 <Space>
-                    <Button danger onClick={() => handleCancel(record.id)}>取消</Button>
-                    <Button color="green" variant="outlined" onClick={() => handleConfirm(record.id)}>确认</Button>
-                    <Button color="blue" variant="outlined" onClick={() => openEditModal(record.id)}>编辑</Button>
+                    <Button danger onClick={() => handleCancel(record.id)}>Cancel</Button>
+                    <Button color="green" variant="outlined" onClick={() => handleConfirm(record.id)}>Confirm</Button>
+                    <Button color="blue" variant="outlined" onClick={() => openEditModal(record.id)}>Edit</Button>
                 </Space>
             ),
         },
@@ -111,7 +111,7 @@ export default function Reservations() {
             setEditRecord(r)
             setEditModalVisible(true)
         } catch (err) {
-            message.error('获取预订详情失败')
+            message.error('Failed to get reservation details')
         }
         setLoading(false)
     }
@@ -121,13 +121,13 @@ export default function Reservations() {
     }
 
     const handleCancel = async (id) => {
-        if (!window.confirm('确定要取消此预订吗？')) return
+        if (!window.confirm('Are you sure you want to cancel this reservation?')) return
         try {
             await cancelReservation(id)
-            message.success('取消成功')
+            message.success('Cancellation successful')
             await fetchTodayReservations()
         } catch (err) {
-            message.error('取消失败')
+            message.error('Cancellation failed')
         }
     }
 
@@ -136,43 +136,43 @@ export default function Reservations() {
             setSelectedTableId(null);
             const tables = await getAvailableTables();
             if (tables.data.length === 0) {
-                message.warning('暂无可用餐桌');
+                message.warning('No available tables');
                 return;
             }
 
             let selectedId = null;
 
             Modal.confirm({
-                title: '分配餐桌',
+                title: 'Assign table',
                 content: (
                     <Select
                         style={{ width: '100%' }}
-                        placeholder="选择要分配的餐桌"
+                        placeholder="Select a table to assign"
                         onChange={(value) => (selectedId = value)}
                     >
                         {tables.data.map(table => (
                             <Select.Option key={table.id} value={table.id}>
-                                {table.tableName} (容量: {table.capacity})
+                                {table.tableName} (Capacity: {table.capacity})
                             </Select.Option>
                         ))}
                     </Select>
                 ),
                 onOk: async () => {
                     if (!selectedId) {
-                        message.error('请分配餐桌');
+                        message.error('Please assign a table');
                         return;
                     }
                     try {
-                        await confirmReservation(id, selectedId); // 使用局部变量
-                        message.success('已确认该预订');
+                        await confirmReservation(id, selectedId);
+                        message.success('Confirmation successful');
                         await fetchTodayReservations();
                     } catch (err) {
-                        message.error('确认失败');
+                        message.error('Confirmation failed');
                     }
                 }
             });
         } catch (err) {
-            message.error('获取可用餐桌失败');
+            message.error('Failed to retrieve available tables');
         }
     };
 
@@ -185,7 +185,7 @@ export default function Reservations() {
                 const res = await getReservationsByStatus(value)
                 setData(res.data)
             } catch (err) {
-                message.error('搜索失败')
+                message.error('Search failed')
             }
             setLoading(false)
         } else {
@@ -200,7 +200,7 @@ export default function Reservations() {
             const res = await getReservationsByPhone(query)
             setData(res.data)
         } catch (err) {
-            message.error('搜索失败')
+            message.error('Search failed')
         }
         setLoading(false)
     }
@@ -212,7 +212,7 @@ export default function Reservations() {
             const res = await getReservationsByName(query)
             setData(res.data)
         } catch (err) {
-            message.error('搜索失败')
+            message.error('Search failed')
         }
         setLoading(false)
     }
@@ -221,13 +221,13 @@ export default function Reservations() {
         setLoading(true)
         try {
             await createReservation(payload)
-            message.success('创建预订成功')
+            message.success('Reservation created successfully')
             setCreateModalVisible(false)
             form.resetFields()
             await fetchTodayReservations()
         } catch (err) {
             console.error(err)
-            message.error('创建预订失败')
+            message.error('Reservation creation failed')
         }
         setLoading(false)
     }
@@ -237,47 +237,47 @@ export default function Reservations() {
         setLoading(true)
         try {
             await updateReservation(editRecord.id, payload)
-            message.success('更新成功')
+            message.success('Update successful')
             setEditModalVisible(false)
             setEditRecord(null)
             form.resetFields()
             await fetchTodayReservations()
         } catch (err) {
             console.error(err)
-            message.error('更新失败')
+            message.error('Update failed')
         }
         setLoading(false)
     }
 
     return (
         <div style={{ margin: '8px' }}>
-            <Card title={'预定管理'}>
+            <Card title={'Reservation Management'}>
                 <div style={{ display: 'flex', marginBottom: 16, gap: 8 }}>
                     <Button type="primary" onClick={openCreateModal}>
-                        创建预订
+                        Create Reservation
                     </Button>
-                    <Button onClick={fetchTodayReservations}>今日预定</Button>
+                    <Button onClick={fetchTodayReservations}>Today's Reservations</Button>
                     <Input
-                        placeholder="查询条件"
+                        placeholder="Search Criteria"
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
                         style={{ width: 200 }}
                     />
-                    <Button onClick={handleSearchPhone}>按电话查询</Button>
-                    <Button onClick={handleSearchName}>按姓名查询</Button>
+                    <Button onClick={handleSearchPhone}>Search by phone number</Button>
+                    <Button onClick={handleSearchName}>Search by name</Button>
                     <Select
                         value={statusFilter}
                         onChange={handleStatusChange}
                         style={{ width: 120 }}
-                        placeholder="按状态查询"
+                        placeholder="Search by status"
                         allowClear
                     >
-                        <Select.Option value="CREATED">被创建</Select.Option>
-                        <Select.Option value="CONFIRMED">确认</Select.Option>
-                        <Select.Option value="CANCELLED">被取消</Select.Option>
+                        <Select.Option value="CREATED">CREATED</Select.Option>
+                        <Select.Option value="CONFIRMED">CONFIRMED</Select.Option>
+                        <Select.Option value="CANCELLED">CANCELLED</Select.Option>
                     </Select>
                     <Button onClick={fetchAll} style={{ marginLeft: 'auto' }}>
-                        查看全部预定
+                        View all reservations
                     </Button>
                 </div>
 

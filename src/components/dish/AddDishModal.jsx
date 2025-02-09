@@ -6,7 +6,7 @@ import { uploadDishImage } from '../../api/dishesAPi.js'
 export default function AddDishModal({
                                          visible,
                                          onCancel,
-                                         onFinish,   // 父组件传进来的回调，用于提交表单后执行 createDish 等操作
+                                         onFinish,
                                      }) {
     const [form] = Form.useForm()
     const [fileList, setFileList] = useState([])
@@ -15,7 +15,7 @@ export default function AddDishModal({
         const { file, onSuccess, onError } = options
         try {
             const res = await uploadDishImage(file)
-            onSuccess(res.data, file) // antd会将res.data存入file.response
+            onSuccess(res.data, file)
         } catch (err) {
             onError(err)
         }
@@ -36,19 +36,19 @@ export default function AddDishModal({
                         if (file.response) {
                             // 把后端返回的图片URL存到表单字段
                             form.setFieldValue('imageUrl', file.response)
-                            message.success('图片上传成功')
+                            message.success('Image uploaded successfully')
                         }
                     } else if (file.status === 'removed') {
                         form.setFieldValue('imageUrl', '')
                     } else if (file.status === 'error') {
-                        message.error('图片上传失败')
+                        message.error('Image upload failed')
                     }
                 }}
             >
                 {fileList.length < 1 && (
                     <div>
                         <PlusOutlined />
-                        <div style={{ marginTop: 8 }}>上传图片</div>
+                        <div style={{ marginTop: 8 }}>Upload image</div>
                     </div>
                 )}
             </Upload>
@@ -69,41 +69,41 @@ export default function AddDishModal({
     const handleClose = () => {
         form.resetFields()
         setFileList([])
-        onCancel() // 通知父组件关闭弹窗
+        onCancel()
     }
 
     return (
         <Modal
-            title="添加菜品"
+            title="Add dish"
             open={visible}
             onCancel={handleClose}
             footer={null}
             destroyOnClose
         >
             <Form layout="vertical" form={form}>
-                <Form.Item label="菜名" name="name" rules={[{ required: true }]}>
+                <Form.Item label="Dish name" name="name" rules={[{ required: true }]}>
                     <Input />
                 </Form.Item>
-                <Form.Item label="分类" name="category" rules={[{ required: true }]}>
+                <Form.Item label="Category" name="category" rules={[{ required: true }]}>
                     <Select>
-                        <Select.Option value="前菜">前菜</Select.Option>
-                        <Select.Option value="主菜">主菜</Select.Option>
-                        <Select.Option value="甜点">甜点</Select.Option>
-                        <Select.Option value="主食">主食</Select.Option>
-                        <Select.Option value="酒水饮料">酒水饮料</Select.Option>
+                        <Select.Option value="Appetizer">Appetizer</Select.Option>
+                        <Select.Option value="MainCourse">Main Course</Select.Option>
+                        <Select.Option value="Dessert">Dessert</Select.Option>
+                        <Select.Option value="StapleFood">Staple Food</Select.Option>
+                        <Select.Option value="Beverages">Beverages</Select.Option>
                     </Select>
                 </Form.Item>
-                <Form.Item label="价格" name="price" rules={[{ required: true }]}>
+                <Form.Item label="price" name="price" rules={[{ required: true }]}>
                     <Input type="number" />
                 </Form.Item>
-                <Form.Item label="原材料" name="ingredients">
-                    <Input placeholder="如: 花生,青菜,豆腐" />
+                <Form.Item label="ingredients" name="ingredients">
+                    <Input placeholder="E.g., peanuts, greens, fish..." />
                 </Form.Item>
-                <Form.Item label="描述" name="description">
+                <Form.Item label="description" name="description">
                     <Input.TextArea rows={3} />
                 </Form.Item>
 
-                <Form.Item label="图片">
+                <Form.Item label="image" name="image">
                     {renderUpload()}
                 </Form.Item>
                 <Form.Item name="imageUrl" hidden>
@@ -112,10 +112,10 @@ export default function AddDishModal({
 
                 <div style={{ textAlign: 'right' }}>
                     <Button style={{ marginRight: 8 }} onClick={handleClose}>
-                        取消
+                        Cancel
                     </Button>
                     <Button type="primary" onClick={handleSubmit}>
-                        提交
+                        Submit
                     </Button>
                 </div>
             </Form>

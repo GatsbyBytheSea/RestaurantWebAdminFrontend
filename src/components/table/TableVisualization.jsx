@@ -40,13 +40,13 @@ const TableVisualization = ({ tables }) => {
                 const order = res.data;
                 navigate(`/orders/detail/${order.id}`);
             } catch (error) {
-                message.error('创建订单失败，请稍后重试');
+                message.error('Order creation failed, please try again later');
             }
         } else if (table.status === 'IN_USE') {
             if (table.currentOrderId) {
                 navigate(`/orders/detail/${table.currentOrderId}`);
             } else {
-                message.error('无法获取当前订单信息');
+                message.error('Unable to retrieve current order information');
             }
         }
     };
@@ -97,7 +97,7 @@ const TableVisualization = ({ tables }) => {
                         }}
                     >
                         <div>{table.tableName}</div>
-                        <div>容量: {table.capacity}</div>
+                        <div>Capacity: {table.capacity}</div>
                     </div>
                 ))}
             </div>

@@ -4,7 +4,7 @@ import { Modal, Button, Form, InputNumber } from 'antd'
 export default function AddDishModal({ open, onCancel, onFinish, currentDish, form}) {
     return (
         <Modal
-            title={currentDish ? `添加 ${currentDish.name}` : '添加菜品'}
+            title={currentDish ? `Add ${currentDish.name}` : 'Add Dish'}
             open={open}
             onCancel={onCancel}
             footer={null}
@@ -12,18 +12,18 @@ export default function AddDishModal({ open, onCancel, onFinish, currentDish, fo
             <Form form={form} onFinish={onFinish}>
                 <Form.Item
                     name="quantity"
-                    label="数量"
-                    rules={[{ required: true, message: '请输入数量' }]}
+                    label="Quantity"
+                    rules={[{ required: true, message: 'Please enter the quantity' }]}
                     initialValue={1}
                 >
                     <InputNumber min={1} />
                 </Form.Item>
                 <Form.Item style={{ textAlign: 'right' }}>
                     <Button onClick={onCancel} style={{ marginRight: 8 }}>
-                        取消
+                        Cancel
                     </Button>
                     <Button type="primary" htmlType="submit">
-                        确认
+                        Confirm
                     </Button>
                 </Form.Item>
             </Form>

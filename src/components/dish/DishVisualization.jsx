@@ -4,7 +4,7 @@ import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 
 function DishVisualization({ dishes, onEdit, onDelete }) {
 
-    const categories = ['前菜', '主菜', '主食', '甜点', '酒水饮料']
+    const categories = ['Appetizer', 'MainCourse', 'StapleFood', 'Dessert', 'Beverages']
 
     return (
         <div style={{ marginTop: 16 }}>
@@ -52,7 +52,7 @@ function DishVisualization({ dishes, onEdit, onDelete }) {
                                         }}
                                     >
                                         <h4 style={{ margin: '0 0 4px 0' }}>{dish.name}</h4>
-                                        <p style={{ margin: 0 }}>€{dish.price}</p>
+                                        <p style={{ margin: 0 }}>€ {dish.price}</p>
 
                                         <div style={{ marginTop: 8, display: 'flex', gap: '8px' }}>
                                             <Button
@@ -61,7 +61,7 @@ function DishVisualization({ dishes, onEdit, onDelete }) {
                                                 size="small"
                                                 onClick={() => onEdit(dish)}
                                             >
-                                                编辑
+                                                Edit
                                             </Button>
 
                                             <Button
@@ -70,7 +70,7 @@ function DishVisualization({ dishes, onEdit, onDelete }) {
                                                 size="small"
                                                 onClick={() => onDelete(dish.id)}
                                             >
-                                                删除
+                                                Delete
                                             </Button>
                                         </div>
                                     </div>

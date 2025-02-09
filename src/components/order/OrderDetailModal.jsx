@@ -18,7 +18,7 @@ const OrderDetailModal = ({ visible, order, onCancel }) => {
             const res = await getOrderItems(order.id);
             setOrderItems(res.data);
         } catch (error) {
-            message.error('加载订单详情失败');
+            message.error('Failed to load order details');
         } finally {
             setLoading(false);
         }
@@ -30,23 +30,23 @@ const OrderDetailModal = ({ visible, order, onCancel }) => {
 
     const columns = [
         {
-            title: '菜品名称',
+            title: 'Dish Name',
             dataIndex: ['dish', 'name'],
             key: 'name',
         },
         {
-            title: '数量',
+            title: 'Quantity',
             dataIndex: 'quantity',
             key: 'quantity',
         },
         {
-            title: '单价',
+            title: 'Price',
             dataIndex: 'price',
             key: 'price',
             render: (val) => `€ ${val}`,
         },
         {
-            title: '小计',
+            title: 'Subtotal',
             key: 'subtotal',
             render: (_, record) => `€ ${(record.price * record.quantity).toFixed(2)}`
         }
@@ -55,7 +55,7 @@ const OrderDetailModal = ({ visible, order, onCancel }) => {
     return (
         <Modal
             visible={visible}
-            title={`订单 ${order ? order.id : ''} 详情`}
+            title={`Order ${order ? order.id : ''} Detail`}
             onCancel={onCancel}
             footer={null}
             width={600}
@@ -68,7 +68,7 @@ const OrderDetailModal = ({ visible, order, onCancel }) => {
                 pagination={false}
                 footer={() => (
                     <div style={{ textAlign: 'right', fontWeight: 'bold' }}>
-                        总金额: € {totalAmount.toFixed(2)}
+                        Total amount: € {totalAmount.toFixed(2)}
                     </div>
                 )}
             />

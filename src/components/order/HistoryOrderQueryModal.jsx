@@ -14,19 +14,19 @@ const HistoryOrderQueryModal = ({ visible, onCancel, onSearch }) => {
     return (
         <Modal
             visible={visible}
-            title="查询历史营业情况"
+            title="Check historical revenue"
             onCancel={onCancel}
             footer={[
                 <Button key="cancel" onClick={onCancel}>
-                    取消
+                    Cancel
                 </Button>,
                 <Button key="search" type="primary" onClick={handleSearch} disabled={!selectedDate}>
-                    查询
+                    Search
                 </Button>,
             ]}
         >
             <Form layout="vertical">
-                <Form.Item label="选择日期">
+                <Form.Item label="Select date">
                     <DatePicker
                         value={selectedDate}
                         maxDate={dayjs()}

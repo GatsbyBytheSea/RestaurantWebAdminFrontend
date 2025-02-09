@@ -25,7 +25,7 @@ export default function DishManagement() {
             const res = await getAllDishes()
             setDishes(res.data)
         } catch (err) {
-            message.error('获取菜品列表失败')
+            message.error('Failed to retrieve dish list')
         }
         setLoading(false)
     }
@@ -35,13 +35,13 @@ export default function DishManagement() {
     }, [])
 
     const handleDelete = async (id) => {
-        if (!window.confirm('确认删除此菜品？')) return
+        if (!window.confirm('Are you sure you want to delete this dish?')) return
         try {
             await deleteDish(id)
-            message.success('删除成功')
+            message.success('Deleted successfully')
             fetchDishes()
         } catch (err) {
-            message.error('删除失败')
+            message.error('Deletion failed')
         }
     }
 
@@ -52,11 +52,11 @@ export default function DishManagement() {
     const handleAddFinish = async (values) => {
         try {
             await createDish(values)
-            message.success('添加成功')
+            message.success('Added successfully')
             setAddVisible(false)
             fetchDishes()
         } catch (err) {
-            message.error('添加失败')
+            message.error('Addition failed')
             throw err
         }
     }
@@ -66,20 +66,20 @@ export default function DishManagement() {
         const id = editModal.record.id
         try {
             await updateDish(id, values)
-            message.success('更新成功')
+            message.success('Updated successfully')
             setEditModal({ visible: false, record: null })
             fetchDishes()
         } catch (err) {
-            message.error('更新失败')
+            message.error('Update failed')
             throw err
         }
     }
 
     return (
         <div style={{ margin: '8px' }}>
-            <Card title={'菜品管理'} loading={loading}>
+            <Card title={'Menu Management'} loading={loading}>
                 <Button type="primary" onClick={() => setAddVisible(true)}>
-                    <PlusOutlined /> 添加菜品
+                    <PlusOutlined /> Add Dish
                 </Button>
 
                 <DishVisualization

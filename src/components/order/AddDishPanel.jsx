@@ -4,7 +4,7 @@ import { Card, Tabs, List } from 'antd'
 export default function AddDishPanel({ dishesByCategory, onDishClick }) {
     return (
         <Card
-            title="添加菜品到当前订单"
+            title="Add dish to the current order"
             style={{ height: '100%' }}
             bodyStyle={{ padding: '0 16px 16px' }}
         >
@@ -32,7 +32,7 @@ export default function AddDishPanel({ dishesByCategory, onDishClick }) {
                                                 style={{
                                                     position: 'relative',
                                                     width: '100%',
-                                                    paddingBottom: '100%', // 利用 padding 形成正方形容器
+                                                    paddingBottom: '100%',
                                                     overflow: 'hidden'
                                                 }}
                                             >

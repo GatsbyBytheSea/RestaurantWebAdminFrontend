@@ -35,7 +35,7 @@ export default function Orders() {
             const res = await getOrders('OPEN', 0, 10);
             setOpenOrders(res.data.content || []);
         } catch (error) {
-            message.error('加载订单失败');
+            message.error('Failed to load orders');
         } finally {
             setLoading(false);
         }
@@ -47,7 +47,7 @@ export default function Orders() {
             const res = await getTodayClosedOrders();
             setClosedOrders(res.data || []);
         } catch (error) {
-            message.error('加载今日已结算订单失败');
+            message.error('Failed to load today\'s settled orders');
         } finally {
             setClosedOrdersLoading(false);
         }
@@ -58,7 +58,7 @@ export default function Orders() {
             const res = await getTodaySales();
             setTodaySales(res.data.sales);
         } catch (error) {
-            message.error('获取今日营业额失败');
+            message.error('Failed to retrieve today\'s revenue');
         }
     };
 
@@ -77,13 +77,13 @@ export default function Orders() {
         if (!selectedOrder) return;
         try {
             await closeOrder(selectedOrder.id, {});
-            message.success(`订单 ${selectedOrder.id} 已结算`);
+            message.success(`Order ${selectedOrder.id} closed successfully`);
             setCloseModalVisible(false);
             fetchOpenOrders();
             fetchClosedOrders();
             fetchTodaySales();
         } catch (e) {
-            message.error(e.response?.data?.error || '结算失败');
+            message.error(e.response?.data?.error || 'Failed to close order');
         }
     };
 
@@ -91,18 +91,18 @@ export default function Orders() {
         getAvailableTables().then(res => {
             setAvailableTables(res.data);
             setCreateModalVisible(true);
-        }).catch(() => message.error('获取可用餐桌失败'));
+        }).catch(() => message.error('Failed to retrieve available tables'));
     };
 
     const onCreateOrderFinish = async (values) => {
         try {
             await createOrder({ tableId: values.tableId });
-            message.success('订单创建成功');
+            message.success('Order created successfully');
             setCreateModalVisible(false);
             form.resetFields();
             fetchOpenOrders();
         } catch (e) {
-            message.error(e.response?.data?.error || '创建订单失败');
+            message.error(e.response?.data?.error || 'Order creation failed');
         }
     };
 
@@ -117,17 +117,17 @@ export default function Orders() {
 
     const openColumns = [
         {
-            title: '订单ID',
+            title: 'Order ID',
             dataIndex: 'id',
             key: 'id',
         },
         {
-            title: '餐桌名称',
+            title: 'Table Name',
             dataIndex: ['table', 'tableName'],
             render: (text) => <Tag color="green">{text}</Tag>,
         },
         {
-            title: '总金额',
+            title: 'Total Amount',
             dataIndex: 'totalAmount',
             key: 'totalAmount',
             render: (val) => (
@@ -137,16 +137,16 @@ export default function Orders() {
             ),
         },
         {
-            title: '操作',
+            title: 'Actions',
             key: 'action',
             align: 'center',
             render: (_, record) => (
                 <Space>
                     <Button color="blue" variant="outlined" onClick={() => navigate(`/orders/detail/${record.id}`)}>
-                        查看
+                        View
                     </Button>
                     <Button color="green" variant="outlined" onClick={() => handleCloseOrder(record)}>
-                        结算
+                        Close
                     </Button>
                 </Space>
             )
@@ -155,17 +155,17 @@ export default function Orders() {
 
     const closedColumns = [
         {
-            title: '订单ID',
+            title: 'Order ID',
             dataIndex: 'id',
             key: 'id',
         },
         {
-            title: '餐桌名称',
+            title: 'Table Name',
             dataIndex: ['table', 'tableName'],
             render: (text) => <Tag color="green">{text}</Tag>,
         },
         {
-            title: '总金额',
+            title: 'Total Amount',
             dataIndex: 'totalAmount',
             key: 'totalAmount',
             render: (val) => (
@@ -175,20 +175,20 @@ export default function Orders() {
             ),
         },
         {
-            title: '结算时间',
+            title: 'Close Time',
             dataIndex: 'closeTime',
             key: 'closeTime',
             render: (text) => text ? new Date(text).toLocaleString() : ''
         },
         {
-            title: '操作',
+            title: 'Actions',
             key: 'action',
             render: (_, record) => (
                 <Button color="blue" variant="outlined" onClick={() => {
                     setSelectedClosedOrder(record);
                     setViewModalVisible(true);
                 }}>
-                    查看
+                    View
                 </Button>
             )
         }
@@ -196,13 +196,13 @@ export default function Orders() {
 
     return (
         <div style={{ margin: '8px' }}>
-            <Card title="订单管理" bodyStyle={{ padding: '16px' }}>
+            <Card title="Order Management" bodyStyle={{ padding: '16px' }}>
                 <Space style={{ marginBottom: 16 }}>
                     <Button type="primary" onClick={handleCreateOrder}>
-                        创建新订单
+                        Create Order
                     </Button>
                     <Button type="default" onClick={handleShowHistoryModal}>
-                        查看历史订单
+                        History Orders
                     </Button>
                 </Space>
 
@@ -215,7 +215,7 @@ export default function Orders() {
                 />
             </Card>
 
-            <Card title="今日已结算订单" style={{ marginTop: '16px' }}>
+            <Card title="Today's closed orders" style={{ marginTop: '16px' }}>
                 <Table
                     dataSource={closedOrders}
                     columns={closedColumns}
@@ -224,7 +224,7 @@ export default function Orders() {
                     pagination={false}
                     footer={() => (
                         <div style={{ textAlign: 'right', fontWeight: 'bold' }}>
-                            今日营业额: € {todaySales}
+                            Today's revenue: € {todaySales}
                         </div>
                     )}
                 />

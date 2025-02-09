@@ -26,7 +26,7 @@ export default function OrderDetail() {
             const res = await getOrderById(orderId)
             setOrder(res.data)
         } catch (e) {
-            message.error('获取订单详情失败')
+            message.error('Failed to retrieve order details')
         } finally {
             setLoading(false)
         }
@@ -38,7 +38,7 @@ export default function OrderDetail() {
             const res = await getOrderItems(orderId)
             setOrderItems(res.data)
         } catch (e) {
-            message.error('获取订单明细失败')
+            message.error('Failed to retrieve order details')
         } finally {
             setLoading(false)
         }
@@ -49,7 +49,7 @@ export default function OrderDetail() {
             const res = await getAllDishes()
             setAllDishes(res.data)
         } catch (e) {
-            message.error('获取菜品失败')
+            message.error('Failed to retrieve dishes')
         }
     }
 
@@ -69,23 +69,23 @@ export default function OrderDetail() {
                 dishId: currentDish.id,
                 quantity: values.quantity
             }])
-            message.success('添加菜品成功')
+            message.success('Item added successfully')
             setAddItemModalVisible(false)
             form.resetFields()
             fetchOrder()
             fetchOrderItems()
         } catch (e) {
-            message.error(e.response?.data?.error || '添加菜品失败')
+            message.error(e.response?.data?.error || 'Failed to add item')
         }
     }
     const handleRemoveItem = async (itemId) => {
         try {
             await removeOrderItem(orderId, itemId)
-            message.success('删除成功')
+            message.success('Deleted successfully')
             fetchOrder()
             fetchOrderItems()
         } catch (e) {
-            message.error(e.response?.data?.error || '删除失败')
+            message.error(e.response?.data?.error || 'Deletion failed')
         }
     }
     const handleClickCloseOrder = () => {
@@ -94,15 +94,15 @@ export default function OrderDetail() {
     const handleConfirmClose = async () => {
         try {
             await closeOrder(orderId, {})
-            message.success(`订单 ${orderId} 已结算`)
+            message.success(`Order ${orderId} closed successfully`)
             setCloseModalVisible(false)
             navigate('/orders')
         } catch (e) {
-            message.error(e.response?.data?.error || '结算失败')
+            message.error(e.response?.data?.error || 'Failed to close order')
         }
     }
 
-    const categories = ['前菜','主菜','主食','酒水饮料','甜点']
+    const categories = ['Appetizer','MainCourse','StapleFood','Dessert','Beverages']
     const dishesByCategory = categories.map(cat => ({
         category: cat,
         dishes: allDishes.filter(d => d.category === cat)
@@ -116,9 +116,9 @@ export default function OrderDetail() {
             <div style={{ background: '#001529', borderBottom: '1px solid #ddd', padding: '16px' }}>
                 <Space style={{ width: '100%', justifyContent: 'space-between' }}>
                     <Button type="default" onClick={() => navigate('/orders')}>
-                        返回订单列表
+                        Back to order list
                     </Button>
-                    <h2 style={{ margin: 0, color: '#fff' }}>订单详情</h2>
+                    <h2 style={{ margin: 0, color: '#fff' }}>Order details</h2>
                 </Space>
             </div>
 
@@ -150,7 +150,7 @@ export default function OrderDetail() {
                             padding: '16px',
                             background: '#fff'
                         }}>
-                            <h3 style={{ margin: 0 }}>餐桌：{tableName || '未指定'}</h3>
+                            <h3 style={{ margin: 0 }}>Table: {tableName || 'Not specified'}</h3>
                         </div>
 
                         <div style={{ flex: 1, overflowY: 'auto', padding: '16px' }}>
@@ -169,9 +169,9 @@ export default function OrderDetail() {
                             justifyContent: 'space-between',
                             alignItems: 'center'
                         }}>
-                            <h3 style={{ margin: 0 }}>总金额：€ {totalAmount}</h3>
+                            <h3 style={{ margin: 0 }}>Total amount: € {totalAmount}</h3>
                             <Button type="primary" onClick={handleClickCloseOrder}>
-                                结算
+                                Checkout
                             </Button>
                         </div>
                     </Col>

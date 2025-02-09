@@ -31,7 +31,7 @@ export default function Dashboard() {
             const total = reservations.reduce((sum, r) => sum + r.numberOfGuests, 0);
             setTotalGuests(total);
         } catch (err) {
-            message.error('获取今日预定失败');
+            message.error('Failed to retrieve today\'s reservations');
         }
     };
 
@@ -41,7 +41,7 @@ export default function Dashboard() {
             const sales = res.data.sales;
             setTodaySales(sales);
         } catch (err) {
-            message.error('获取今日营业额失败');
+            message.error('Failed to retrieve today\'s revenue');
         }
     };
 
@@ -62,7 +62,7 @@ export default function Dashboard() {
 
             setSalesData(formattedData);
         } catch (err) {
-            message.error('获取营业额统计数据失败');
+            message.error('Failed to retrieve revenue statistics');
         }
     };
 
@@ -86,7 +86,7 @@ export default function Dashboard() {
                     color: '#1890ff',
                     tooltip: {
                         formatter: (datum) => {
-                            return { name: '销售额', value: `€${datum.sales}` };
+                            return { name: 'Sales revenue', value: `€${datum.sales}` };
                         },
                     },
                 });
@@ -108,13 +108,13 @@ export default function Dashboard() {
                         bodyStyle={{ padding: '16px 24px' }}
                     >
                         <Statistic
-                            title="今日预定数"
+                            title="Today's reservation count"
                             value={reservationCount}
                             valueStyle={{ color: '#3f8600' }}
                         />
                         <Divider style={{ margin: '12px 0' }} />
                         <Statistic
-                            title="总预定人数"
+                            title="Total number of reservations"
                             value={totalGuests}
                             valueStyle={{ color: '#2f54eb' }}
                         />
@@ -128,7 +128,7 @@ export default function Dashboard() {
                         bodyStyle={{ padding: '16px 24px' }}
                     >
                         <Statistic
-                            title="今日营业额"
+                            title="Today's revenue"
                             value={todaySales}
                             precision={2}
                             prefix="€"
@@ -139,17 +139,17 @@ export default function Dashboard() {
             </Row>
 
             <Card
-                title="最近一个月营业额趋势"
+                title="Revenue trend in the past month"
                 bordered={false}
                 style={{ borderRadius: 8 }}
                 bodyStyle={{ padding: '16px 24px' }}
             >
                 {salesData.length > 0 ? (
                     <Text type="secondary">
-                        查看最近一个月（{salesData[0].date} ~ {salesData[salesData.length - 1].date}）的每日营业额
+                        View daily revenue for the past month ({salesData[0].date} ~ {salesData[salesData.length - 1].date})
                     </Text>
                 ) : (
-                    <Text>暂无营业额数据</Text>
+                    <Text>No revenue data available</Text>
                 )}
                 <div ref={chartRef} style={{ height: 400, marginTop: 16 }} />
             </Card>

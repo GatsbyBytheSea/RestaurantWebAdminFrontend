@@ -7,14 +7,12 @@ import './CalendarStyle.css'
 function disabledDate(current) {
     if (!current) return false
 
-    // 最多提前两周预订
     const now = dayjs().startOf('day')
     const twoWeeks = dayjs().add(28, 'day').endOf('day')
     if (current.isBefore(now) || current.isAfter(twoWeeks)) {
         return true
     }
 
-    // 周一周四放假
     const dayOfWeek = current.day()
     return dayOfWeek === 1 || dayOfWeek === 4;
 }
@@ -22,7 +20,6 @@ function disabledDate(current) {
 function disabledTime(selectedMoment) {
     if (!selectedMoment) return {}
 
-    // 营业时间：12:00-14:00 和 19:00-22:00
     const allowedHours = [12, 13, 14, 19, 20, 21, 22]
     const allHours = Array.from({ length: 24 }, (_, i) => i)
     const disabledHours = allHours.filter((h) => !allowedHours.includes(h))
@@ -65,7 +62,7 @@ export default function CreateReservationModal({
 
     return (
         <Modal
-            title="创建预订"
+            title="Create Reservation"
             open={open}
             onCancel={() => {
                 form.resetFields()
@@ -76,30 +73,30 @@ export default function CreateReservationModal({
         >
             <Form form={form} layout="vertical" onFinish={handleFinish}>
                 <Form.Item
-                    label="顾客姓名"
+                    label="Customer Name"
                     name="customerName"
-                    rules={[{ required: true, message: '请输入顾客姓名' }]}
+                    rules={[{ required: true, message: 'Please enter the customer\'s name' }]}
                 >
                     <Input />
                 </Form.Item>
                 <Form.Item
-                    label="顾客电话"
+                    label="Customer Phone"
                     name="customerPhone"
-                    rules={[{ required: true, message: '请输入顾客电话' }]}
+                    rules={[{ required: true, message: 'Please enter the customer\'s phone number' }]}
                 >
                     <Input />
                 </Form.Item>
                 <Form.Item
-                    label="用餐人数"
+                    label="Number of guests"
                     name="numberOfGuests"
-                    rules={[{ required: true, message: '请输入用餐人数' }]}
+                    rules={[{ required: true, message: 'Please enter the number of guests' }]}
                 >
                     <Input type="number" />
                 </Form.Item>
                 <Form.Item
-                    label="预订时间"
+                    label="Reservation time"
                     name="reservationTime"
-                    rules={[{ required: true, message: '请选择合法的预订时间' }]}
+                    rules={[{ required: true, message: 'Reservation time' }]}
                 >
                     <DatePicker
                         style={{ width: '100%' }}
@@ -117,7 +114,7 @@ export default function CreateReservationModal({
                 </Form.Item>
                 <Form.Item>
                     <Button type="primary" htmlType="submit" loading={loading}>
-                        提交
+                        Create
                     </Button>
                 </Form.Item>
             </Form>

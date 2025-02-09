@@ -5,7 +5,7 @@ export default function CreateOrderModal({ open, onCancel, onFinish, form, avail
 {
     return (
         <Modal
-            title="创建新订单"
+            title="Create new order"
             open={open}
             onCancel={onCancel}
             footer={null}
@@ -13,23 +13,23 @@ export default function CreateOrderModal({ open, onCancel, onFinish, form, avail
             <Form form={form} onFinish={onFinish}>
                 <Form.Item
                     name="tableId"
-                    label="选择餐桌"
-                    rules={[{ required: true, message: '请选择可用餐桌' }]}
+                    label="Select table"
+                    rules={[{ required: true, message: 'Please select an available table' }]}
                 >
-                    <Select placeholder="请选择可用餐桌">
+                    <Select placeholder="Please select an available table">
                         {availableTables.map(t => (
                             <Select.Option key={t.id} value={t.id}>
-                                {t.tableName}（可容纳 {t.capacity} 人）
+                                {t.tableName}( Capacity: {t.capacity} )
                             </Select.Option>
                         ))}
                     </Select>
                 </Form.Item>
                 <Form.Item style={{ textAlign: 'right' }}>
                     <Button onClick={onCancel} style={{ marginRight: 8 }}>
-                        取消
+                        Cancel
                     </Button>
                     <Button type="primary" htmlType="submit">
-                        确认
+                        Create
                     </Button>
                 </Form.Item>
             </Form>

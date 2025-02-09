@@ -12,27 +12,27 @@ export default function Login() {
         setLoading(true)
         try {
             await adminLogin(values.username, values.password)
-            message.success('登录成功')
+            message.success('Login successful')
             navigate('/')
         } catch (err) {
-            message.error('登录失败或用户名密码错误')
+            message.error('Login failed or incorrect username/password')
         }
         setLoading(false)
     }
 
     return (
         <div style={{ width: 300, margin: '100px auto' }}>
-            <h2 style={{ textAlign: 'center' }}>管理员登录</h2>
+            <h2 style={{ textAlign: 'center' }}>Administrator login</h2>
             <Form layout="vertical" onFinish={onFinish}>
-                <Form.Item label="用户名" name="username" rules={[{ required: true }]}>
+                <Form.Item label="Username" name="username" rules={[{ required: true }]}>
                     <Input />
                 </Form.Item>
-                <Form.Item label="密码" name="password" rules={[{ required: true }]}>
+                <Form.Item label="Password" name="password" rules={[{ required: true }]}>
                     <Input.Password />
                 </Form.Item>
                 <Form.Item>
                     <Button type="primary" htmlType="submit" loading={loading} block>
-                        登录
+                        Login
                     </Button>
                 </Form.Item>
             </Form>
