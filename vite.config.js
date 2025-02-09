@@ -7,7 +7,6 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
-      // 代理所有 /api 请求到 8080
       '/api': {
         target: 'http://localhost:8080',
         changeOrigin: true
