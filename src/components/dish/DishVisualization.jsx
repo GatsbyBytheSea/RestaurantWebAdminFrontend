@@ -54,7 +54,7 @@ function DishVisualization({ dishes, onEdit, onDelete }) {
                                         <h4 style={{ margin: '0 0 4px 0' }}>{dish.name}</h4>
                                         <p style={{ margin: 0 }}>€ {dish.price}</p>
 
-                                        <div style={{ marginTop: 8, display: 'flex', gap: '8px' }}>
+                                        <div style={{ marginTop: 8, display: 'flex', gap: '4px' }}>
                                             <Button
                                                 type="primary"
                                                 icon={<EditOutlined />}

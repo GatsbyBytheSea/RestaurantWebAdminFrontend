@@ -256,7 +256,7 @@ export default function Reservations() {
                     <Button type="primary" onClick={openCreateModal}>
                         Create Reservation
                     </Button>
-                    <Button onClick={fetchTodayReservations}>Today's Reservations</Button>
+                    <Button color="blue" variant="outlined" onClick={fetchTodayReservations}>Today's Reservations</Button>
                     <Input
                         placeholder="Search Criteria"
                         value={query}
