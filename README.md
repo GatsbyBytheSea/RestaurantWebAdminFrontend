@@ -18,7 +18,7 @@ This project serves as the frontend of a restaurant management system, offering 
 
 The backend of this project is implemented using **Spring Boot**, and its source code repository is available at:
 
-[https://github.com/GatsbyBytheSea/RestaurantWebBackend](https://github.com/GatsbyBytheSea/RestaurantWebBackend)
+[RestaurantWebBackend](https://github.com/GatsbyBytheSea/RestaurantWebBackend)
 
 This README provides guidance on using the frontend. For backend-related documentation, please refer to the backend repository.
 
