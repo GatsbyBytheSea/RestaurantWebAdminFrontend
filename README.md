@@ -1,5 +1,7 @@
 # Restaurant Management System Frontend
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+
 A **React + Ant Design**-based restaurant management system frontend project, designed for restaurant managers to comprehensively manage tables, reservations, menu items, orders, and view data insights.
 
 ## Project Overview
@@ -176,12 +178,12 @@ After building, a `build` folder will be generated for deployment.
   ![Table_visualization.jpeg](public/images/Table_visualization.jpeg)  
   ![Table_edit.jpeg](public/images/Table_edit.jpeg)
 
-## Author
-
-**Xinlei ZHU**: [@GatsbyBytheSea](https://github.com/GatsbyBytheSea)
-
 ## License
 
-This project is licensed under the **MIT License**. See the [`LICENSE`](LICENSE) file for details.
+This project is licensed under the [MIT License](./LICENSE).
+Copyright (c) 2025 [**Xinlei ZHU**](https://github.com/GatsbyBytheSea)
 
-**Copyright © Xinlei ZHU**
+---
+
+> **Copyright &copy; 2025 [Xinlei ZHU](https://github.com/GatsbyBytheSea).**
+> Licensed under the MIT License.
